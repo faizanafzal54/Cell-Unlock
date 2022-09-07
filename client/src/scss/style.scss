@@ -1,0 +1,59 @@
+// If you want to override variables do it here
+@import 'variables';
+
+$enable-ltr: true;
+$enable-rtl: true;
+
+// Import CoreUI for React components library
+@import '@coreui/coreui/scss/coreui';
+
+// Import Chart.js custom tooltips styles
+@import '@coreui/chartjs/scss/coreui-chartjs';
+
+@import 'layout';
+@import 'example';
+
+// If you want to add custom CSS you can put it here.
+@import 'custom';
+
+.font-12 {
+  font-size: 12px;
+}
+
+.font-20 {
+  font-size: 20px;
+}
+
+.page-item.active .page-link {
+  background-color: #303c54;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.tag-list {
+  list-style: none !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.tag-btn {
+  padding: 0px !important;
+  border-radius: 20px;
+  font-size: 13px !important;
+  padding-left: 4px !important;
+  padding-bottom: 2px !important;
+}
+
+.tag-list .tag-btn:hover {
+  background-color: transparent !important;
+}
+
+
+
+.action-button {
+  background-color: #303c54;
+
+}
