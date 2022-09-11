@@ -20,7 +20,7 @@ const userSchema = new Schema({
   dateOfBirth: {
     type: Date,
   },
-  emergencyPhone: {
+  gender: {
     type: String,
   },
   address: {
@@ -42,7 +42,8 @@ const userSchema = new Schema({
     type: String,
   },
   role: {
-    type: Number,
+    type: String,
+    enum: ["ADMIN", "USER"],
   },
   phone: {
     type: String,
@@ -69,43 +70,10 @@ const userSchema = new Schema({
   isProfileComplete: {
     type: Boolean,
   },
-  isDeleted: {
+  isActive: {
     type: Boolean,
+    default: true,
   },
-  notifications: {
-    textNotifications: {
-      isEnable: Boolean,
-      isReceiveEvery: Boolean,
-      daily: {
-        isEnable: Boolean,
-        time: Date,
-      },
-      weekly: {
-        isEnable: Boolean,
-        time: Date,
-      },
-    },
-    emailNotifications: {
-      isEnable: Boolean,
-      isReceiveEvery: Boolean,
-      daily: {
-        isEnable: Boolean,
-        time: Date,
-      },
-      weekly: {
-        isEnable: Boolean,
-        time: Date,
-      },
-    },
-  },
-  emergencyContacts: [
-    {
-      firstName: String,
-      lastName: String,
-      role: String,
-      email: String,
-    },
-  ],
   timeZone: {
     type: String,
     default: "America/New_York",
@@ -113,68 +81,3 @@ const userSchema = new Schema({
 });
 const User = mongoose.model("User", userSchema);
 module.exports = User;
-
-// let User = {
-//   displayName: "String",
-//   firstName: "String",
-//   lastName: "String",
-//   middleName: "String",
-//   email: "String",
-//   phone: "String",
-//   dateOfBirth: "Date",
-//   emergencyContact: "String",
-//   address: "String",
-//   city: "String",
-//   State: "String",
-//   country: "String",
-//   zip: "Integer",
-//   password: "String",
-//   socialId: "String", //Facebook
-//   socialProvider: "String", //Facebook
-//   emailConfirmationLink: "String",
-//   resetPasswordLink: "String",
-//   inviteLink: "String",
-//   inviteLinkDate: "String",
-//   role: "Integer",
-//   owner: "ObjectId",
-//   image: "String",
-//   isActive: "Boolean",
-// };
-
-// let MyCircle = {
-//   userId: "ObjectId",
-//   friends: [
-//     {
-//       friendId: "ObjectID",
-//       connectionType: "String", // Doctors, Family, Friend
-//       status: "String",
-//     },
-//   ],
-// };
-
-// let Reminders = {
-//   userId: "ObjectId",
-//   subject: "String",
-//   howMuch: "String",
-//   link: "String",
-//   details: "String",
-//   predefinedTime: "Date",
-//   medicationStartDate: "Date",
-//   medicationEndDate: "Date",
-//   reminderType: {
-//     mobile: "Boolean",
-//     email: "Boolean",
-//   },
-//   isCompleted: "Boolean",
-//   reminderTo: ["ObjectId"], //followups
-//   isActive: "Boolean",
-// };
-// let Medications = {}; //  Medication part as per mockups has been convered in Reminders
-
-// let Notifications = {
-//   to: "ObjectId",
-//   from: "ObjectId",
-//   content: "String",
-//   isRead: "Boolean",
-//   isCompleted: "Boolean",
-// };
