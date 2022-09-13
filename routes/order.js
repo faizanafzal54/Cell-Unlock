@@ -1,8 +1,8 @@
 const router = require("express").Router();
-const { listOfOrder } = require("../controllers/order");
+const { getOrders, createOrder } = require("../controllers/order");
 const { verifyToken } = require("../middleware/authValidator");
 
-// router.post("/create", verifyToken, );
-router.get("/list", verifyToken, listOfOrder);
+router.post("/create", verifyToken, createOrder);
+router.get("/list", verifyToken, getOrders);
 
 module.exports = router;

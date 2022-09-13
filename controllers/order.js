@@ -1,4 +1,4 @@
-const { sendResponse } = require("../utils/utils");
+const { sendResponse, generateRandomString } = require("../utils/utils");
 const orderDao = require("../daos/order");
 
 module.exports = {
@@ -17,12 +17,15 @@ module.exports = {
     try {
       const { service, status, fromDate, toDate, userId, imeiNumbers } =
         req.body;
+      const str = generateRandomString(3);
+      const orderCount = await orderDao.orderCount();
       await orderDao.create({
         service,
-        status,
+        status: "pending",
         fromDate,
         toDate,
         userId,
+        orderNumber: `${str}${orderCount + 1}`,
         imeiNumbers,
         history: [
           {

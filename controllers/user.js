@@ -1,7 +1,7 @@
 const { sendResponse, generateToken } = require("../utils/utils");
 const bcrypt = require("bcryptjs");
 const userDao = require("../daos/user");
-const { saltRounds, ROLEUSER } = require("../constants/constants");
+const { SALTROUNDS, ROLEUSER } = require("../constants/constants");
 
 module.exports = {
   login: async (req, res) => {
@@ -59,7 +59,7 @@ module.exports = {
   regiser: async (req, res) => {
     try {
       const { firstName, lastName, email, password, gender } = req.body;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const hashedPassword = await bcrypt.hash(password, SALTROUNDS);
       await userDao.create({
         firstName,
         lastName,

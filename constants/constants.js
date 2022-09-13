@@ -1,4 +1,4 @@
 module.exports = {
   ROLEUSER: "USER",
-  saltRounds: 10,
+  SALTROUNDS: 10,
 };
