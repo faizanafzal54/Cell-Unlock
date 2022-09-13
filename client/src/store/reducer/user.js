@@ -17,6 +17,14 @@ const userReducer = (state = defaultState, action) => {
         user: action.payload.user,
         token: action.payload.token,
       }
+
+    case 'Register':
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+        token: action.payload.token,
+      }
     case 'Logout':
       return {
         ...state,

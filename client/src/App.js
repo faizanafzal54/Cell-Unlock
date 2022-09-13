@@ -26,7 +26,6 @@ export const checkAuth = () => {
 
 function RequireAuth() {
   let location = useLocation()
-
   if (!checkAuth()) {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them
@@ -54,7 +53,6 @@ class App extends Component {
           </Routes>
         </Suspense>
         <ToastContainer />
-
       </HashRouter>
     )
   }
