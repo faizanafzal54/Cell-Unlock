@@ -25,6 +25,9 @@ const orderSchema = new Schema({
       action: {
         type: String,
       },
+      updatedAt: {
+        type: Date,
+      },
     },
   ],
 });
