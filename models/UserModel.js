@@ -78,6 +78,23 @@ const userSchema = new Schema({
     type: String,
     default: "America/New_York",
   },
+  credits: {
+    type: Number,
+  },
+  cardInfo: {
+    expiry: String,
+    cardNumber: String,
+    cardName: String,
+  },
+  stripeCustomerId: {
+    type: String,
+  },
+  paymentMethodId: {
+    type: String,
+  },
+  isStripeAccountActive: {
+    type: Boolean,
+  },
 });
 const User = mongoose.model("User", userSchema);
 module.exports = User;
