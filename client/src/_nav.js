@@ -44,6 +44,13 @@ const _nav = [
     to: '/orders',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
+
+  {
+    component: CNavItem,
+    name: 'Add Order',
+    to: '/add-order',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  },
   // {
   //   component: CNavTitle,
   //   name: 'Theme',

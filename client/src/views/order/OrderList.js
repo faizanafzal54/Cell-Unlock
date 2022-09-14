@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { orderList } from 'src/store/selector/order'
 
 import { orderListAction } from 'src/store/actions/order'
-const Order = () => {
+const OrderList = () => {
   const [orders, setOrders] = useState(useSelector(orderList))
   const dispatch = useDispatch()
 
@@ -85,4 +85,4 @@ const Order = () => {
   )
 }
 
-export default Order
+export default OrderList
