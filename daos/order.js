@@ -3,10 +3,15 @@ const Order = require("../models/OrderModel");
 module.exports = {
   find: async () => {
     try {
-      const response = await Order.find().populate({
-        path: "userId",
-        select: "firstName",
-      });
+      const response = await Order.find()
+        .populate({
+          path: "userId",
+          select: "firstName",
+        })
+        .populate({
+          path: "service",
+          select: "name",
+        });
       return response;
     } catch (err) {
       let error = new Error(err);

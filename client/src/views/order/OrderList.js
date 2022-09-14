@@ -12,19 +12,20 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CListGroup,
+  CListGroupItem,
 } from '@coreui/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { orderList } from 'src/store/selector/order'
 
 import { orderListAction } from 'src/store/actions/order'
 const OrderList = () => {
-  const [orders, setOrders] = useState(useSelector(orderList))
+  const orders = useSelector(orderList)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(orderListAction())
-  }, [])
-  console.log(orders, 'ssssssssssssss')
+  }, [orderListAction])
   return (
     <>
       <CRow>
@@ -45,13 +46,13 @@ const OrderList = () => {
                 <CTableHead>
                   <CTableRow>
                     {/* <CTableHeaderCell scope="col">#</CTableHeaderCell> */}
-                    <CTableHeaderCell scope="col">Service</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Order Number</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Service Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Customer Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Start Date</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">End Date</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">IMEI Numbers</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Customer</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Order</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">From</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">To</CTableHeaderCell>
-                    {/* <CTableHeaderCell scope="col">IMEI</CTableHeaderCell> */}
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -59,19 +60,42 @@ const OrderList = () => {
                     return (
                       <CTableRow key={order._id}>
                         {/* <CTableHeaderCell scope="row">1</CTableHeaderCell> */}
-                        <CTableDataCell>{order.service}</CTableDataCell>
-                        <CTableDataCell>{order.status}</CTableDataCell>
-                        <CTableDataCell>{order?.userId.firstName}</CTableDataCell>
                         <CTableDataCell>{order.orderNumber}</CTableDataCell>
-                        <CTableDataCell>{order.fromDate}</CTableDataCell>
-                        <CTableDataCell>{order.toDate}</CTableDataCell>
+                        <CTableDataCell>{order?.service?.name}</CTableDataCell>
+                        <CTableDataCell>{order?.userId?.firstName}</CTableDataCell>
+                        <CTableDataCell>
+                          {new Date(order?.fromDate).toISOString().split('T')[0]}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {new Date(order.toDate).toISOString().split('T')[0]}
+                        </CTableDataCell>
+                        {
+                          <CTableDataCell>
+                            <CListGroup>
+                              {order.imeiNumbers.map((number, index) => (
+                                <CListGroupItem key={index}>{number}</CListGroupItem>
+                              ))}
+                            </CListGroup>
+                          </CTableDataCell>
+                        }
                         {/* <CTableDataCell>
-                          {order.imeiNumbers.map((number) => (
-                            <ul>
-                              <li>{number}</li>
-                            </ul>
-                          ))}
+                          {order.status === 'Pending' ? (
+                            <span class="badge text-bg-warning">{order.status}</span>
+                          ) : order.status === 'Delivered' ? (
+                            <span class="badge text-bg-success">{order.status}</span>
+                          ) : (
+                            <span class="badge text-bg-danger">{order.status}</span>
+                          )}
                         </CTableDataCell> */}
+
+                        <CTableDataCell>
+                          {order.status}
+                          <span class="badge text-bg-warning">asdsa</span>
+                          {/* {order.status === 'Pending' ? (
+                          ) : (
+                            'null'
+                          )} */}
+                        </CTableDataCell>
                       </CTableRow>
                     )
                   })}

@@ -48,7 +48,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Add Order',
-    to: '/add-order',
+    to: '/orders/edit/new',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
   // {

@@ -56,7 +56,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/orders', name: 'Orders', element: OrderList },
-  { path: '/add-order', name: 'Add Order', element: AddOrder },
+  { path: '/orders/edit/:mode', name: 'Add Order', element: AddOrder },
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },

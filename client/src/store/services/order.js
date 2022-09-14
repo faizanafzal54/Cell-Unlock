@@ -9,3 +9,11 @@ const setHeader = {
 export const orderList = () => {
   return request.get(apiUrl + 'orders/list', setHeader)
 }
+
+export const addOrder = (obj) => {
+  return request.post(apiUrl + 'orders/create', obj, setHeader)
+}
+
+export const serviceList = () => {
+  return request.get(apiUrl + 'services', setHeader)
+}

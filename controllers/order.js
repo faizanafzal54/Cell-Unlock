@@ -21,7 +21,7 @@ module.exports = {
       const orderCount = await orderDao.orderCount();
       await orderDao.create({
         service,
-        status: "pending",
+        // status: "Pending",
         fromDate,
         toDate,
         userId,
