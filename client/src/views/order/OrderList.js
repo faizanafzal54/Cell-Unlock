@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import CIcon from '@coreui/icons-react'
+
 import {
   CCard,
   CCardBody,
@@ -7,18 +9,20 @@ import {
   CRow,
   CTable,
   CTableBody,
-  CTableCaption,
   CTableDataCell,
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CListGroup,
-  CListGroupItem,
+  CBadge,
+  CTooltip,
+  CLink,
 } from '@coreui/react'
+import { cilPencil, cilPlus } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { orderList } from 'src/store/selector/order'
 
 import { orderListAction } from 'src/store/actions/order'
+import { Link } from 'react-router-dom'
 const OrderList = () => {
   const orders = useSelector(orderList)
   const dispatch = useDispatch()
@@ -29,23 +33,22 @@ const OrderList = () => {
   return (
     <>
       <CRow>
-        {/* <CCol xs={12}>
-          <DocsCallout name="Table" href="components/table" />
-        </CCol> */}
         <CCol xs={12}>
           <CCard className="mb-4">
-            <CCardHeader>
-              <strong>React Table</strong> <small>Basic example</small>
+            <CCardHeader className="text-end">
+              <Link to="/orders/edit/new">
+                <CTooltip content="Add New Order">
+                  <CIcon
+                    className="me-3 border border-secondary text-secondary rounded-circle"
+                    icon={cilPlus}
+                  />
+                </CTooltip>
+              </Link>
             </CCardHeader>
             <CCardBody>
-              {/* <p className="text-medium-emphasis small">
-                Using the most basic table CoreUI, here&#39;s how <code>&lt;CTable&gt;</code>-based
-                tables look in CoreUI.
-              </p> */}
               <CTable>
                 <CTableHead>
                   <CTableRow>
-                    {/* <CTableHeaderCell scope="col">#</CTableHeaderCell> */}
                     <CTableHeaderCell scope="col">Order Number</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Service Name</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Customer Name</CTableHeaderCell>
@@ -53,6 +56,7 @@ const OrderList = () => {
                     <CTableHeaderCell scope="col">End Date</CTableHeaderCell>
                     <CTableHeaderCell scope="col">IMEI Numbers</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -71,30 +75,32 @@ const OrderList = () => {
                         </CTableDataCell>
                         {
                           <CTableDataCell>
-                            <CListGroup>
+                            <ul>
                               {order.imeiNumbers.map((number, index) => (
-                                <CListGroupItem key={index}>{number}</CListGroupItem>
+                                <li key={index}>{number}</li>
                               ))}
-                            </CListGroup>
+                            </ul>
                           </CTableDataCell>
                         }
-                        {/* <CTableDataCell>
-                          {order.status === 'Pending' ? (
-                            <span class="badge text-bg-warning">{order.status}</span>
-                          ) : order.status === 'Delivered' ? (
-                            <span class="badge text-bg-success">{order.status}</span>
-                          ) : (
-                            <span class="badge text-bg-danger">{order.status}</span>
-                          )}
-                        </CTableDataCell> */}
-
                         <CTableDataCell>
-                          {order.status}
-                          <span class="badge text-bg-warning">asdsa</span>
-                          {/* {order.status === 'Pending' ? (
+                          {order.status === 'Pending' ? (
+                            <CBadge className="pt-2 pb-2" color="warning">
+                              {order.status}
+                            </CBadge>
+                          ) : order.status === 'Delivered' ? (
+                            <CBadge className="pt-2 pb-2" color="success">
+                              {order.status}
+                            </CBadge>
                           ) : (
-                            'null'
-                          )} */}
+                            <CBadge className="pt-2 pb-2" color="danger">
+                              {order.status}
+                            </CBadge>
+                          )}
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center">
+                          <Link to={`/orders/edit/${order._id}`}>
+                            <CIcon className="text-secondary" icon={cilPencil} />
+                          </Link>
                         </CTableDataCell>
                       </CTableRow>
                     )

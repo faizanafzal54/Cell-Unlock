@@ -17,3 +17,11 @@ export const addOrder = (obj) => {
 export const serviceList = () => {
   return request.get(apiUrl + 'services', setHeader)
 }
+
+export const orderById = (id) => {
+  return request.get(apiUrl + `orders/${id}`, setHeader)
+}
+
+export const updateOrder = (id, obj) => {
+  return request.patch(apiUrl + `orders/${id}`, obj, setHeader)
+}

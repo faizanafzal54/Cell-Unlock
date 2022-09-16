@@ -40,4 +40,25 @@ module.exports = {
       sendResponse(err, req, res, err);
     }
   },
+
+  orderById: async (req, res) => {
+    try {
+      const order = await orderDao.findByPk(req.params.id);
+      sendResponse(null, req, res, {
+        order,
+      });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+
+  updateOrder: async (req, res) => {
+    try {
+      await orderDao.findOneAndUpdate({ _id: req.params.id }, { ...req.body });
+      // console.log(order);
+      sendResponse(null, req, res, { message: "Order successfully updated" });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
 };

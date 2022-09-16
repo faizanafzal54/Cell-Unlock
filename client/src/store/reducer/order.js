@@ -1,6 +1,7 @@
 const defaultState = {
   orders: [],
   services: [],
+  orderData: {},
 }
 
 const orderReducer = (state = defaultState, action) => {
@@ -14,6 +15,11 @@ const orderReducer = (state = defaultState, action) => {
       return {
         ...state,
         services: action.payload.services,
+      }
+    case 'OrderById':
+      return {
+        ...state,
+        orderData: action.payload.order,
       }
 
     default:

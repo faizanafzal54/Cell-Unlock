@@ -42,4 +42,30 @@ module.exports = {
       throw error;
     }
   },
+  findByPk: async (id) => {
+    try {
+      const order = await Order.findById(id).populate({
+        path: "service",
+        select: "name",
+      });
+      return order;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
+
+  findOneAndUpdate: async (where, update) => {
+    try {
+      const response = await Order.findOneAndUpdate(where, update, {
+        new: true,
+      });
+      return response;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
 };

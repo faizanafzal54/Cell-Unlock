@@ -32,12 +32,12 @@ const _nav = [
       text: 'NEW',
     },
   },
-  {
-    component: CNavItem,
-    name: 'Users',
-    to: '/customers',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Users',
+  //   to: '/customers',
+  //   icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: 'Orders',
@@ -45,12 +45,6 @@ const _nav = [
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
 
-  {
-    component: CNavItem,
-    name: 'Add Order',
-    to: '/orders/edit/new',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-  },
   // {
   //   component: CNavTitle,
   //   name: 'Theme',
