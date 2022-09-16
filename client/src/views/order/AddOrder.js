@@ -51,10 +51,6 @@ const AddOrder = () => {
     }
   }, [orderByIdAction])
 
-  const getOrderData = (data) => {
-    console.log(data, 'data::::::::::')
-  }
-
   const submitHandler = (e) => {
     e.preventDefault()
 
