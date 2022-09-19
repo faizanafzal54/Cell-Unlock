@@ -32,16 +32,16 @@ const _nav = [
       text: 'NEW',
     },
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'Users',
-  //   to: '/customers',
-  //   icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-  // },
   {
     component: CNavItem,
     name: 'Orders',
     to: '/orders',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Admin Orders',
+    to: 'admin/orders',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
 

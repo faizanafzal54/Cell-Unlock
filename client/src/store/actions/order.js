@@ -1,4 +1,12 @@
-import { orderList, serviceList, addOrder, orderById, updateOrder } from 'src/store/services/order'
+import {
+  orderList,
+  serviceList,
+  addOrder,
+  orderById,
+  updateOrder,
+  adminOrderList,
+  adminUpdateOrder,
+} from 'src/store/services/order'
 import { toastify } from '../services/toastify'
 
 export const orderListAction = () => async (dispatch) => {
@@ -68,6 +76,37 @@ export const serviceListAction = () => async (dispatch) => {
           services: res.data.data.services,
         },
       })
+    }
+  } catch (err) {
+    toastify('error', err?.response?.data?.err.message)
+  }
+}
+
+// admin actions
+
+export const adminOrderListAction = (limit, page) => async (dispatch) => {
+  try {
+    const res = await adminOrderList(limit, page)
+    if (res.status === 200) {
+      dispatch({
+        type: 'AdminOrdersList',
+        payload: {
+          orders: res.data.data.orders,
+          totalPages: res.data.data.totalPages,
+        },
+      })
+    }
+  } catch (err) {
+    toastify('error', err?.response?.data?.err.message)
+  }
+}
+
+export const adminUpdateOrderAction = (id, obj, callback) => async (dispatch) => {
+  try {
+    const res = await adminUpdateOrder(id, obj)
+    if (res.status === 200) {
+      toastify('success', res?.data?.data.message)
+      callback()
     }
   } catch (err) {
     toastify('error', err?.response?.data?.err.message)

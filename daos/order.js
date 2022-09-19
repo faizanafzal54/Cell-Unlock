@@ -44,10 +44,15 @@ module.exports = {
   },
   findByPk: async (id) => {
     try {
-      const order = await Order.findById(id).populate({
-        path: "service",
-        select: "name",
-      });
+      const order = await Order.findById(id)
+        .populate({
+          path: "service",
+          select: "name",
+        })
+        .populate({
+          path: "userId",
+          select: "firstName lastName",
+        });
       return order;
     } catch (err) {
       let error = new Error(err);
@@ -61,6 +66,26 @@ module.exports = {
       const response = await Order.findOneAndUpdate(where, update, {
         new: true,
       });
+      return response;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
+  getPaginatedOrders: async (startIndex, endIndex) => {
+    try {
+      const response = await Order.find()
+        .populate({
+          path: "userId",
+          select: "firstName",
+        })
+        .populate({
+          path: "service",
+          select: "name",
+        })
+        .skip(endIndex)
+        .limit(startIndex);
       return response;
     } catch (err) {
       let error = new Error(err);

@@ -10,6 +10,7 @@ exports.verifyToken = async (req, res, next) => {
       const bearerToken = bearer[1];
 
       const authData = await jwt.verify(bearerToken, config.jwtSecret);
+      req.user = authData.user;
       next();
     } else {
       res.sendStatus(401);

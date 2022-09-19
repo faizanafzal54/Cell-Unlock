@@ -8,7 +8,7 @@ const orderSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ["Pending", "Delivered", "Rejected"],
+    enum: ["Confirmed", "Completed", "Rejected"],
     default: "Pending",
   },
   fromDate: { type: Date },
@@ -37,6 +37,9 @@ const orderSchema = new Schema({
       },
     },
   ],
+
+  code: { type: String, trim: true },
+  description: { type: String, trim: true },
 });
 const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;

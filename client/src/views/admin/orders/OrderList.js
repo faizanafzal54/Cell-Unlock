@@ -14,27 +14,30 @@ import {
   CTableHeaderCell,
   CTableRow,
   CBadge,
-  CTooltip,
-  CLink,
+  CPagination,
+  CPaginationItem,
 } from '@coreui/react'
-import { cilPencil, cilPlus, cilMagnifyingGlass } from '@coreui/icons'
+import { cilPencil, cilMagnifyingGlass } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { orderList } from 'src/store/selector/order'
-import { orderListAction } from 'src/store/actions/order'
+import { adminOrderList, pages } from 'src/store/selector/order'
+import { orderListAction, adminOrderListAction } from 'src/store/actions/order'
 import { Link } from 'react-router-dom'
 const OrderList = () => {
-  const orders = useSelector(orderList)
+  const orders = useSelector(adminOrderList)
+  const totalPages = useSelector(pages)
   const dispatch = useDispatch()
+  const [limit, setLimit] = useState(1)
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
-    dispatch(orderListAction())
-  }, [orderListAction])
+    dispatch(adminOrderListAction(limit, page))
+  }, [orderListAction, page])
   return (
     <>
       <CRow>
         <CCol xs={12}>
           <CCard className="mb-4">
-            <CCardHeader className="text-end">
+            {/* <CCardHeader className="text-end">
               <Link to="/orders/edit/new">
                 <CTooltip content="Add New Order">
                   <CIcon
@@ -43,7 +46,7 @@ const OrderList = () => {
                   />
                 </CTooltip>
               </Link>
-            </CCardHeader>
+            </CCardHeader> */}
             <CCardBody>
               <CTable>
                 <CTableHead>
@@ -96,9 +99,9 @@ const OrderList = () => {
                             </CBadge>
                           )}
                         </CTableDataCell>
-                        <CTableDataCell className="text-center">
-                          <Link to={`/orders/edit/${order._id}`}>
-                            <CIcon className="text-secondary" icon={cilPencil} />
+                        <CTableDataCell className="text-center ">
+                          <Link to={`/complete/${order._id}`}>
+                            <CIcon className="text-secondary " icon={cilPencil} />
                           </Link>
                           &nbsp;&nbsp;
                           <Link to={`/orders/${order._id}`}>
@@ -112,6 +115,40 @@ const OrderList = () => {
               </CTable>
             </CCardBody>
           </CCard>
+        </CCol>
+
+        <CCol className="" xs={12}>
+          <CPagination className="justify-content-end" aria-label="Page navigation example">
+            <CPaginationItem
+              aria-label="Previous"
+              onClick={() => {
+                if (page > 1) {
+                  setPage(page - 1)
+                }
+              }}
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </CPaginationItem>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <CPaginationItem key={page} onClick={() => setPage(page)}>
+                {page}
+              </CPaginationItem>
+            ))}
+
+            <CPaginationItem aria-label="Next">
+              <span
+                aria-hidden="true"
+                onClick={() => {
+                  if (page < totalPages) {
+                    setPage(page + 1)
+                  }
+                }}
+              >
+                &raquo;
+              </span>
+            </CPaginationItem>
+          </CPagination>
         </CCol>
       </CRow>
     </>

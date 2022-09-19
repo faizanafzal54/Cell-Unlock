@@ -2,6 +2,8 @@ const defaultState = {
   orders: [],
   services: [],
   orderData: {},
+  totalPages: 0,
+  adminOrders: [],
 }
 
 const orderReducer = (state = defaultState, action) => {
@@ -16,6 +18,14 @@ const orderReducer = (state = defaultState, action) => {
         ...state,
         services: action.payload.services,
       }
+    case 'AdminOrdersList':
+      return {
+        ...state,
+        adminOrders: action.payload.orders,
+        totalPages: action.payload?.totalPages,
+      }
+
+      AdminOrdersList
     case 'OrderById':
       return {
         ...state,

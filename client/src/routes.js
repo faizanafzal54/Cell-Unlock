@@ -3,6 +3,10 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const OrderList = React.lazy(() => import('./views/order/OrderList'))
 const AddOrder = React.lazy(() => import('./views/order/AddOrder'))
+const ViewOrder = React.lazy(() => import('./views/order/ViewOrder'))
+const AminOrderList = React.lazy(() => import('./views/admin/orders/OrderList'))
+const OrderComplete = React.lazy(() => import('./views/admin/orders/OrderComplete'))
+
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -56,7 +60,11 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/orders', name: 'Orders', element: OrderList },
+  { path: '/orders/:id', name: 'Orders View', element: ViewOrder },
   { path: '/orders/edit/:mode', name: 'Add Order', element: AddOrder },
+
+  { path: 'admin/orders/', name: 'Add Order', element: AminOrderList },
+  { path: '/complete/:id', name: 'Add Order', element: OrderComplete },
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },

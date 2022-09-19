@@ -6,12 +6,11 @@ import {
   CCardHeader,
   CCol,
   CForm,
-  CFormInput,
   CFormLabel,
   CFormTextarea,
   CRow,
+  CFormInput,
   CFormSelect,
-  CInputGroup,
 } from '@coreui/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -22,109 +21,70 @@ import {
   addOrderAction,
   orderByIdAction,
   updateOrderAction,
+  adminUpdateOrderAction,
 } from 'src/store/actions/order'
 import { serviceList, user, order } from 'src/store/selector/order'
 import { ToastContainer } from 'react-toastify'
 import { toastify } from 'src/store/services/toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
-const AddOrder = () => {
-  const services = useSelector(serviceList)
-  const userDetail = useSelector(user)
+const OrderComplete = () => {
   const [fromDate, setFromDate] = useState(new Date())
   const [toDate, setToDate] = useState(new Date())
   const [service, setService] = useState('')
+  const [code, setCode] = useState('')
+  const [description, setDescription] = useState('')
   const [imeiNumber, setImeiNumber] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const params = useParams()
 
   useEffect(async () => {
-    if (params.mode !== 'new') {
-      const data = await dispatch(orderByIdAction(params.mode))
-      setImeiNumber(data?.imeiNumbers)
-      setService(data?.service?._id)
-      setFromDate(new Date(data?.fromDate))
-      setToDate(new Date(data?.toDate))
-    }
+    const data = await dispatch(orderByIdAction(params.id))
+    setImeiNumber(data?.imeiNumbers)
+    setService(data?.service?.name)
+    setFromDate(new Date(data?.fromDate))
+    setToDate(new Date(data?.toDate))
   }, [orderByIdAction])
 
   const submitHandler = (e) => {
     e.preventDefault()
+    if (code === '' || description === '') return toastify('error', 'Please fill all fields')
 
-    if (imeiNumber === '' || service === '' || !toDate || !fromDate)
-      return toastify('error', 'Please fill all fields')
-
-    if (!imeiNumber.match(/^\d+(,\d+)*$/))
-      return toastify('error', 'Enter valid IMEI number according to format')
-
-    let imeiNumbers = !Array.isArray(imeiNumber) ? imeiNumber.split(',') : imeiNumber
-    imeiNumbers = imeiNumbers.slice(0, imeiNumbers.length)
-
-    if (params.mode !== 'new') {
-      dispatch(
-        updateOrderAction(
-          params.mode,
-          {
-            service,
-            toDate,
-            fromDate,
-            imeiNumbers,
-          },
-          callback,
-        ),
-      )
-    } else {
-      dispatch(
-        addOrderAction(
-          { service, userId: userDetail._id, toDate, fromDate, imeiNumbers },
-          callback,
-        ),
-      )
-    }
+    dispatch(
+      adminUpdateOrderAction(params.id, { code, description, status: 'Completed' }, callback),
+    )
   }
   const callback = () => {
-    setImeiNumber('')
-    navigate('/orders')
+    navigate('/admin/orders')
   }
-  useEffect(() => {
-    dispatch(serviceListAction())
-  }, [serviceListAction])
   return (
     <>
       <CRow>
         <CCol xs={12}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Creat New Order</strong>
+              <strong>Update Order</strong>
             </CCardHeader>
             <CCardBody>
               <CCol xs={4} className="m-auto mt-3 mb-5">
                 <CForm onSubmit={submitHandler}>
-                  <div className="mb-3 ">
-                    <CFormLabel htmlFor="exampleFormControlText">Select Service</CFormLabel>
-                    {/* <CInputGroup className="has-validation"> */}
-                    <CFormSelect
-                      onChange={(e) => setService(e.target.value)}
-                      required
-                      id="validationCustom01"
-                    >
-                      <option>Select Service</option>
-                      {services?.map((service) => (
-                        <option key={service._id} value={service._id}>
-                          {service.name}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                    {/* </CInputGroup> */}
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="exampleFormControlInput1">Service</CFormLabel>
+                    <CFormInput type="text" value={service} disabled />
                   </div>
+
                   <div className="mb-3">
                     <CFormLabel>Start Date</CFormLabel>
-                    <DatePicker selected={fromDate} onChange={(date) => setFromDate(date)} />
+                    <DatePicker
+                      selected={fromDate}
+                      onChange={(date) => setFromDate(date)}
+                      disabled
+                    />
                   </div>
                   <div className="mb-3">
                     <CFormLabel>End Date</CFormLabel>
-                    <DatePicker selected={toDate} onChange={(date) => setToDate(date)} />
+                    <DatePicker selected={toDate} onChange={(date) => setToDate(date)} disabled />
                   </div>
                   <div className="mb-3">
                     <CFormLabel htmlFor="exampleFormControlTextarea1">
@@ -136,14 +96,33 @@ const AddOrder = () => {
                       value={imeiNumber}
                       placeholder="seprate IMEI number with , ex: 358265010779665,358265010779665   "
                       onChange={(e) => setImeiNumber(e.target.value)}
-                      // required
+                      disabled
                     ></CFormTextarea>
                     {/* <span>seprate IMEI number with ","</span> */}
                   </div>
 
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="exampleFormControlInput1">Code</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      placeholder="Enter code"
+                      value={code}
+                      onChange={(e) => setCode(e.target.value)}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
+                    <CFormTextarea
+                      id="exampleFormControlTextarea1"
+                      rows="3"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    ></CFormTextarea>
+                  </div>
+
                   <div className=" pt-3  text-end">
                     <CButton type="submit" color="secondary" variant="outline" className="text-end">
-                      {params.mode !== 'new' ? 'Save' : 'Add Order'}
+                      Save
                     </CButton>
                   </div>
                 </CForm>
@@ -157,4 +136,4 @@ const AddOrder = () => {
   )
 }
 
-export default AddOrder
+export default OrderComplete

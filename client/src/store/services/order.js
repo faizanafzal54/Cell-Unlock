@@ -1,9 +1,10 @@
 import { apiUrl } from 'src/configs/config'
 import request from 'src/configs/request'
+import { store } from '../store'
+const { token } = store.getState().user
 const setHeader = {
   headers: {
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpcCI6Ijo6MSIsInJvbGUiOiJVU0VSIiwidXNlciI6eyJfaWQiOiI2MzFmOTg5MzQ0NjY3ODA4NjNiYzliNDgiLCJuYW1lIjoiYXNpZiBraGFuIiwiZmlyc3ROYW1lIjoiYXNpZiIsImxhc3ROYW1lIjoia2hhbiIsImVtYWlsIjoiYXNpZi5raGFuQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIn0sImlhdCI6MTY2MzEwMzQxOSwiZXhwIjoxNjYzMzYyNjE5fQ.HJ7WgSck3YG4icMI9daTBMpAfG_4HkWmpsziXv16BPA',
+    Authorization: `Bearer ${token}`,
   },
 }
 export const orderList = () => {
@@ -24,4 +25,14 @@ export const orderById = (id) => {
 
 export const updateOrder = (id, obj) => {
   return request.patch(apiUrl + `orders/${id}`, obj, setHeader)
+}
+
+// admin services
+
+export const adminOrderList = (limit, page) => {
+  return request.get(apiUrl + `orders/admin/list?page=${page}&limit=${limit}`, setHeader)
+}
+
+export const adminUpdateOrder = (id, obj) => {
+  return request.patch(apiUrl + `orders/admin/${id}`, obj, setHeader)
 }

@@ -4,7 +4,7 @@ const orderDao = require("../daos/order");
 module.exports = {
   getOrders: async (req, res) => {
     try {
-      const orders = await orderDao.find();
+      const orders = await orderDao.find({ userId: req.user._id });
       sendResponse(null, req, res, {
         orders,
       });
@@ -53,6 +53,46 @@ module.exports = {
   },
 
   updateOrder: async (req, res) => {
+    try {
+      // req.body.history = [
+      //   {
+      //     userId,
+      //     action: "Order Updated",
+      //     updatedAt: new Date(),
+      //   },
+      // ],
+      await orderDao.findOneAndUpdate({ _id: req.params.id }, { ...req.body });
+      // console.log(order);
+      sendResponse(null, req, res, { message: "Order successfully updated" });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+
+  // admin controllers
+
+  adminGetOrders: async (req, res) => {
+    try {
+      const page = parseInt(req.query.page ? req.query.page : 1);
+      const limit = parseInt(req.query.limit ? req.query.limit : 2);
+      console.log({ page, limit });
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+
+      const orders = await orderDao.getPaginatedOrders(startIndex, endIndex);
+      const orderCount = await orderDao.orderCount();
+
+      const totalPages = orderCount / limit;
+      sendResponse(null, req, res, {
+        orders,
+        totalPages,
+      });
+    } catch (error) {
+      sendResponse(err, req, res, err);
+    }
+  },
+
+  adminUpdateOrder: async (req, res) => {
     try {
       await orderDao.findOneAndUpdate({ _id: req.params.id }, { ...req.body });
       // console.log(order);
