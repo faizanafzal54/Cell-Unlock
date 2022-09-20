@@ -9,6 +9,7 @@ const paymentsSchema = new Schema({
   paymentGatewayId: { type: String },
   status: { type: String, trim: true, enum: ["Created", "Paid"] }, //Paid
   transactionRef: { type: String, trim: true },
+  transactionDate: { type: Date },
   creditsBought: { type: Number },
 });
 const Payment = mongoose.model("Payment", paymentsSchema);

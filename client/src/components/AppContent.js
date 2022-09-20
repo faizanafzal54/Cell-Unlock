@@ -4,6 +4,7 @@ import { CContainer, CSpinner } from '@coreui/react'
 
 // routes config
 import routes from '../routes'
+// import { routes, adminRoutes } from '../routes'
 
 const AppContent = () => {
   return (
@@ -23,6 +24,19 @@ const AppContent = () => {
               )
             )
           })}
+          {/* {adminRoutes.map((route, idx) => {
+            return (
+              route.element && (
+                <Route
+                  key={idx}
+                  path={route.path}
+                  exact={route.exact}
+                  name={route.name}
+                  element={<route.element />}
+                />
+              )
+            )
+          })} */}
           <Route path="/" element={<Navigate to="dashboard" replace />} />
         </Routes>
       </Suspense>

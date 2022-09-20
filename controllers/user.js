@@ -2,6 +2,14 @@ const { sendResponse, generateToken } = require("../utils/utils");
 const bcrypt = require("bcryptjs");
 const userDao = require("../daos/user");
 const { SALTROUNDS, ROLEUSER } = require("../constants/constants");
+const paymentsDao = require("../daos/payments");
+const {
+  createCustomer,
+  createPaymentMethod,
+  attachPaymentMethod,
+  createPaymentIntent,
+  confirmPaymentIntent,
+} = require("../services/stripe");
 
 module.exports = {
   login: async (req, res) => {
@@ -69,6 +77,70 @@ module.exports = {
         role: ROLEUSER,
       });
       sendResponse(null, req, res, { message: "Account successfully created" });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+  createStripeCustomer: async (req, res) => {
+    try {
+      const { userId, expiry, cardNumber, cvc } = req.body;
+      const user = await userDao.findByPk(userId);
+      if (user) {
+        const stripeuser = await createCustomer(user.email);
+        const paymentMethod = await createPaymentMethod(
+          expiry,
+          cardNumber,
+          cvc
+        );
+        await attachPaymentMethod(paymentMethod.id, stripeuser.id);
+        await userDao.findOneAndUpdate(
+          { _id: userId },
+          {
+            stripeCustomerId: stripeuser.id,
+            paymentMethodId: paymentMethod.id,
+            isStripeAccountActive: true,
+          }
+        );
+        sendResponse(null, req, res, { message: "Information Added" });
+      }
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+  purchaseCredits: async (req, res) => {
+    try {
+      const { userId, credits } = req.body;
+      const totalPrice = credits * 10; // one credit of $10
+      const user = await userDao.findByPk(userId);
+      if (user && user.isStripeAccountActive) {
+        const paymentIntent = await createPaymentIntent({
+          amount: Math.round(totalPrice * 100),
+          currency: "usd",
+          payment_method_types: ["card"],
+          payment_method: user.paymentMethodId,
+          customer: user.stripeCustomerId,
+          confirmation_method: "automatic",
+          capture_method: "automatic",
+        });
+        await paymentsDao.create({
+          userId,
+          status: "Paid",
+          creditsBought: credits,
+          paymentGatewayId: paymentIntent.id,
+          transactionDate: new Date(),
+        });
+        const currentCredits = user.credits ? user.credits : 0;
+        await userDao.findOneAndUpdate(
+          { _id: userId },
+          {
+            credits: currentCredits + credits, // add credits in user model
+          }
+        );
+        sendResponse(null, req, res, {
+          updatedCredits: currentCredits + credits,
+          message: "Credits bought successfully",
+        });
+      }
     } catch (err) {
       sendResponse(err, req, res, err);
     }

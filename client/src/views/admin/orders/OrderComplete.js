@@ -67,64 +67,79 @@ const OrderComplete = () => {
               <strong>Update Order</strong>
             </CCardHeader>
             <CCardBody>
-              <CCol xs={4} className="m-auto mt-3 mb-5">
+              <CCol className="m-auto mt-3 mb-5">
                 <CForm onSubmit={submitHandler}>
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="exampleFormControlInput1">Service</CFormLabel>
-                    <CFormInput type="text" value={service} disabled />
-                  </div>
+                  <CRow>
+                    <CCol>
+                      <div className="mb-3">
+                        <CFormLabel htmlFor="exampleFormControlInput1">Service</CFormLabel>
+                        <CFormInput type="text" value={service} disabled />
+                      </div>
 
-                  <div className="mb-3">
-                    <CFormLabel>Start Date</CFormLabel>
-                    <DatePicker
-                      selected={fromDate}
-                      onChange={(date) => setFromDate(date)}
-                      disabled
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <CFormLabel>End Date</CFormLabel>
-                    <DatePicker selected={toDate} onChange={(date) => setToDate(date)} disabled />
-                  </div>
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="exampleFormControlTextarea1">
-                      Enter IMEI Numbers
-                    </CFormLabel>
-                    <CFormTextarea
-                      id="exampleFormControlTextarea1"
-                      rows="3"
-                      value={imeiNumber}
-                      placeholder="seprate IMEI number with , ex: 358265010779665,358265010779665   "
-                      onChange={(e) => setImeiNumber(e.target.value)}
-                      disabled
-                    ></CFormTextarea>
-                    {/* <span>seprate IMEI number with ","</span> */}
-                  </div>
+                      <div className="mb-3">
+                        <CFormLabel>Start Date</CFormLabel>
+                        <DatePicker
+                          selected={fromDate}
+                          onChange={(date) => setFromDate(date)}
+                          disabled
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <CFormLabel>End Date</CFormLabel>
+                        <DatePicker
+                          selected={toDate}
+                          onChange={(date) => setToDate(date)}
+                          disabled
+                        />
+                      </div>
+                    </CCol>
+                    <CCol>
+                      <div className="mb-3">
+                        <CFormLabel htmlFor="exampleFormControlTextarea1">
+                          Enter IMEI Numbers
+                        </CFormLabel>
+                        <CFormTextarea
+                          id="exampleFormControlTextarea1"
+                          rows="3"
+                          value={imeiNumber}
+                          placeholder="seprate IMEI number with , ex: 358265010779665,358265010779665   "
+                          onChange={(e) => setImeiNumber(e.target.value)}
+                          disabled
+                        ></CFormTextarea>
+                        {/* <span>seprate IMEI number with ","</span> */}
+                      </div>
 
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="exampleFormControlInput1">Code</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      placeholder="Enter code"
-                      value={code}
-                      onChange={(e) => setCode(e.target.value)}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
-                    <CFormTextarea
-                      id="exampleFormControlTextarea1"
-                      rows="3"
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                    ></CFormTextarea>
-                  </div>
+                      <div className="mb-3">
+                        <CFormLabel htmlFor="exampleFormControlInput1">Code</CFormLabel>
+                        <CFormInput
+                          type="text"
+                          placeholder="Enter code"
+                          value={code}
+                          onChange={(e) => setCode(e.target.value)}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
+                        <CFormTextarea
+                          id="exampleFormControlTextarea1"
+                          rows="3"
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                        ></CFormTextarea>
+                      </div>
 
-                  <div className=" pt-3  text-end">
-                    <CButton type="submit" color="secondary" variant="outline" className="text-end">
-                      Save
-                    </CButton>
-                  </div>
+                      <div className=" pt-3  text-end">
+                        <CButton
+                          type="submit"
+                          color="secondary"
+                          variant="outline"
+                          className="text-end"
+                        >
+                          Save
+                        </CButton>
+                      </div>
+                    </CCol>
+                  </CRow>
                 </CForm>
               </CCol>
             </CCardBody>

@@ -84,8 +84,8 @@ module.exports = {
           path: "service",
           select: "name",
         })
-        .skip(endIndex)
-        .limit(startIndex);
+        .skip(startIndex)
+        .limit(endIndex);
       return response;
     } catch (err) {
       let error = new Error(err);

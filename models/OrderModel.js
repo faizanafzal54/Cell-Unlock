@@ -9,7 +9,7 @@ const orderSchema = new Schema({
   status: {
     type: String,
     enum: ["Confirmed", "Completed", "Rejected"],
-    default: "Pending",
+    default: "Confirmed",
   },
   fromDate: { type: Date },
   toDate: { type: Date },

@@ -75,11 +75,12 @@ module.exports = {
     try {
       const page = parseInt(req.query.page ? req.query.page : 1);
       const limit = parseInt(req.query.limit ? req.query.limit : 2);
-      console.log({ page, limit });
       const startIndex = (page - 1) * limit;
       const endIndex = page * limit;
 
-      const orders = await orderDao.getPaginatedOrders(startIndex, endIndex);
+      console.log({ startIndex, endIndex });
+
+      const orders = await orderDao.getPaginatedOrders(startIndex, limit);
       const orderCount = await orderDao.orderCount();
 
       const totalPages = orderCount / limit;

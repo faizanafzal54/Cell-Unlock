@@ -45,6 +45,25 @@ const _nav = [
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
 
+  {
+    component: CNavGroup,
+    name: 'Credits',
+    to: '/credits',
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Buy',
+        to: '/credits/buy',
+      },
+      {
+        component: CNavItem,
+        name: 'Manage Account',
+        to: '/credits/manage-account',
+      },
+    ],
+  },
+
   // {
   //   component: CNavTitle,
   //   name: 'Theme',

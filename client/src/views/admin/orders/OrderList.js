@@ -26,7 +26,7 @@ const OrderList = () => {
   const orders = useSelector(adminOrderList)
   const totalPages = useSelector(pages)
   const dispatch = useDispatch()
-  const [limit, setLimit] = useState(1)
+  const [limit, setLimit] = useState(3)
   const [page, setPage] = useState(1)
 
   useEffect(() => {
@@ -100,7 +100,7 @@ const OrderList = () => {
                           )}
                         </CTableDataCell>
                         <CTableDataCell className="text-center ">
-                          <Link to={`/complete/${order._id}`}>
+                          <Link to={`/admin/orders/edit/${order._id}`}>
                             <CIcon className="text-secondary " icon={cilPencil} />
                           </Link>
                           &nbsp;&nbsp;

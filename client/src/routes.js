@@ -4,6 +4,8 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const OrderList = React.lazy(() => import('./views/order/OrderList'))
 const AddOrder = React.lazy(() => import('./views/order/AddOrder'))
 const ViewOrder = React.lazy(() => import('./views/order/ViewOrder'))
+const BuyCredits = React.lazy(() => import('./views/credit/BuyCredits'))
+const ManageAccount = React.lazy(() => import('./views/credit/ManageAccount'))
 const AminOrderList = React.lazy(() => import('./views/admin/orders/OrderList'))
 const OrderComplete = React.lazy(() => import('./views/admin/orders/OrderComplete'))
 
@@ -55,17 +57,22 @@ const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
-
+// export const adminRoutes = [
+//   { path: '/', exact: true, name: 'Home' },
+//   { path: '/admin/dashboard', name: 'Dashboard', element: Dashboard },
+//   { path: '/admin/orders/', name: 'Add Order', element: AminOrderList },
+//   { path: '/admin/complete/:id', name: 'Edit Order', element: OrderComplete },
+// ]
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/orders', name: 'Orders', element: OrderList },
   { path: '/orders/:id', name: 'Orders View', element: ViewOrder },
+  { path: '/credits/buy', name: 'Buy Credits', element: BuyCredits },
+  { path: '/credits/manage-account', name: 'Manage Account', element: ManageAccount },
   { path: '/orders/edit/:mode', name: 'Add Order', element: AddOrder },
-
-  { path: 'admin/orders/', name: 'Add Order', element: AminOrderList },
-  { path: '/complete/:id', name: 'Add Order', element: OrderComplete },
-
+  { path: '/admin/orders/', name: 'Add Order', element: AminOrderList },
+  { path: '/admin/orders/edit/:id', name: 'Edit Order', element: OrderComplete },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
@@ -109,5 +116,4 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
 ]
-
 export default routes

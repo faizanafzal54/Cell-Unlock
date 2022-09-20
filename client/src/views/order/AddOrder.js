@@ -12,6 +12,7 @@ import {
   CRow,
   CFormSelect,
   CInputGroup,
+  CContainer,
 } from '@coreui/react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -99,55 +100,67 @@ const AddOrder = () => {
               <strong>Creat New Order</strong>
             </CCardHeader>
             <CCardBody>
-              <CCol xs={4} className="m-auto mt-3 mb-5">
+              <CContainer className=" mt-3 mb-5">
                 <CForm onSubmit={submitHandler}>
-                  <div className="mb-3 ">
-                    <CFormLabel htmlFor="exampleFormControlText">Select Service</CFormLabel>
-                    {/* <CInputGroup className="has-validation"> */}
-                    <CFormSelect
-                      onChange={(e) => setService(e.target.value)}
-                      required
-                      id="validationCustom01"
-                    >
-                      <option>Select Service</option>
-                      {services?.map((service) => (
-                        <option key={service._id} value={service._id}>
-                          {service.name}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                    {/* </CInputGroup> */}
-                  </div>
-                  <div className="mb-3">
-                    <CFormLabel>Start Date</CFormLabel>
-                    <DatePicker selected={fromDate} onChange={(date) => setFromDate(date)} />
-                  </div>
-                  <div className="mb-3">
-                    <CFormLabel>End Date</CFormLabel>
-                    <DatePicker selected={toDate} onChange={(date) => setToDate(date)} />
-                  </div>
-                  <div className="mb-3">
-                    <CFormLabel htmlFor="exampleFormControlTextarea1">
-                      Enter IMEI Numbers
-                    </CFormLabel>
-                    <CFormTextarea
-                      id="exampleFormControlTextarea1"
-                      rows="3"
-                      value={imeiNumber}
-                      placeholder="seprate IMEI number with , ex: 358265010779665,358265010779665   "
-                      onChange={(e) => setImeiNumber(e.target.value)}
-                      // required
-                    ></CFormTextarea>
-                    {/* <span>seprate IMEI number with ","</span> */}
-                  </div>
+                  <CRow className=" justify-content-center ">
+                    <CCol className="">
+                      <div className="mb-3 ">
+                        <CFormLabel htmlFor="exampleFormControlText">Select Service</CFormLabel>
+                        {/* <CInputGroup className="has-validation"> */}
+                        <CFormSelect
+                          onChange={(e) => setService(e.target.value)}
+                          required
+                          id="validationCustom01"
+                        >
+                          <option>Select Service</option>
+                          {services?.map((service) => (
+                            <option key={service._id} value={service._id}>
+                              {service.name}
+                            </option>
+                          ))}
+                        </CFormSelect>
+                        {/* </CInputGroup> */}
+                      </div>
 
-                  <div className=" pt-3  text-end">
-                    <CButton type="submit" color="secondary" variant="outline" className="text-end">
-                      {params.mode !== 'new' ? 'Save' : 'Add Order'}
-                    </CButton>
-                  </div>
+                      <div className="mb-3">
+                        <CFormLabel htmlFor="exampleFormControlTextarea1">
+                          Enter IMEI Numbers
+                        </CFormLabel>
+                        <CFormTextarea
+                          id="exampleFormControlTextarea1"
+                          rows="3"
+                          value={imeiNumber}
+                          placeholder="seprate IMEI number with , ex: 358265010779665,358265010779665   "
+                          onChange={(e) => setImeiNumber(e.target.value)}
+                          // required
+                        ></CFormTextarea>
+                        {/* <span>seprate IMEI number with ","</span> */}
+                      </div>
+                    </CCol>
+                    <CCol className="">
+                      <div className="mb-3">
+                        <CFormLabel>Start Date</CFormLabel>
+                        <DatePicker selected={fromDate} onChange={(date) => setFromDate(date)} />
+                      </div>
+                      <div className="mb-3">
+                        <CFormLabel>End Date</CFormLabel>
+                        <DatePicker selected={toDate} onChange={(date) => setToDate(date)} />
+                      </div>
+
+                      <div className=" pt-3  text-end">
+                        <CButton
+                          type="submit"
+                          color="secondary"
+                          variant="outline"
+                          className="text-end"
+                        >
+                          {params.mode !== 'new' ? 'Save' : 'Add Order'}
+                        </CButton>
+                      </div>
+                    </CCol>
+                  </CRow>
                 </CForm>
-              </CCol>
+              </CContainer>
             </CCardBody>
           </CCard>
         </CCol>
