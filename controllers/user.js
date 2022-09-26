@@ -110,7 +110,7 @@ module.exports = {
   purchaseCredits: async (req, res) => {
     try {
       const { userId, credits } = req.body;
-      const totalPrice = credits * 10; // one credit of $10
+      const totalPrice = credits * 1; // one credit of $1
       const user = await userDao.findByPk(userId);
       if (user && user.isStripeAccountActive) {
         const paymentIntent = await createPaymentIntent({
