@@ -6,6 +6,8 @@ const serviceSchema = new Schema({
   description: { type: String },
   credits: { type: Number },
   isDeleted: { type: Boolean, default: false },
+
+  type: { type: String, enum: ["IMEI", "SERVER"] },
 });
 const Service = mongoose.model("Service", serviceSchema);
 module.exports = Service;
