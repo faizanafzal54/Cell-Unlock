@@ -6,9 +6,7 @@ module.exports = {
     try {
       const { name, description, credits } = req.body;
       await serviceDao.create({
-        name,
-        description,
-        credits,
+        ...req.body,
       });
       sendResponse(null, req, res, { message: "Service successfully created" });
     } catch (err) {

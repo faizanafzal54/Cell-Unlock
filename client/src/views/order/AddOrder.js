@@ -36,6 +36,8 @@ const AddOrder = () => {
   const [toDate, setToDate] = useState(new Date())
   const [service, setService] = useState('')
   const [imeiNumber, setImeiNumber] = useState('')
+  const [fieldType, setFieldType] = useState('')
+  const [customFields, setCustomFields] = useState([])
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const params = useParams()
@@ -91,6 +93,26 @@ const AddOrder = () => {
   useEffect(() => {
     dispatch(serviceListAction())
   }, [serviceListAction])
+
+  // useEffect(() => {
+  //   const selectedService = services.find((item) => item._id === service)
+  // }, [service])
+
+  const selectService = (e) => {
+    const serviceId = e.target.value
+    const service = services.find((item) => item._id === serviceId)
+
+    if (!service) return setFieldType('NONE')
+
+    if (service) {
+      setService(serviceId)
+      setFieldType(service?.fieldType.type)
+      service?.fieldType?.customFields.length !== 0
+        ? setCustomFields(service?.fieldType?.customFields)
+        : setCustomFields([])
+      console.log(customFields, 'customField')
+    }
+  }
   return (
     <>
       <CRow>
@@ -108,7 +130,7 @@ const AddOrder = () => {
                         <CFormLabel htmlFor="exampleFormControlText">Select Service</CFormLabel>
                         {/* <CInputGroup className="has-validation"> */}
                         <CFormSelect
-                          onChange={(e) => setService(e.target.value)}
+                          onChange={(e) => selectService(e)}
                           required
                           id="validationCustom01"
                         >
@@ -121,21 +143,48 @@ const AddOrder = () => {
                         </CFormSelect>
                         {/* </CInputGroup> */}
                       </div>
-
-                      <div className="mb-3">
-                        <CFormLabel htmlFor="exampleFormControlTextarea1">
-                          Enter IMEI Numbers
-                        </CFormLabel>
-                        <CFormTextarea
-                          id="exampleFormControlTextarea1"
-                          rows="3"
-                          value={imeiNumber}
-                          placeholder="seprate IMEI number with , ex: 358265010779665,358265010779665   "
-                          onChange={(e) => setImeiNumber(e.target.value)}
-                          // required
-                        ></CFormTextarea>
-                        {/* <span>seprate IMEI number with ","</span> */}
-                      </div>
+                      {fieldType === 'SINGLE' ? (
+                        <div className="mb-3">
+                          <CFormLabel htmlFor="exampleFormControlTextarea1">IMEI Field</CFormLabel>
+                          <CFormTextarea
+                            id="exampleFormControlTextarea1"
+                            rows="3"
+                            value={imeiNumber}
+                            placeholder="seprate IMEI number with , ex: 358265010779665,358265010779665   "
+                            onChange={(e) => setImeiNumber(e.target.value)}
+                            // required
+                          ></CFormTextarea>
+                          {/* <span>seprate IMEI number with ","</span> */}
+                        </div>
+                      ) : fieldType === 'BOTH' ? (
+                        <div>
+                          <div className="mb-3">
+                            <CFormLabel htmlFor="exampleFormControlTextarea1">
+                              IMEI Field
+                            </CFormLabel>
+                            <CFormTextarea
+                              id="exampleFormControlTextarea1"
+                              rows="3"
+                              value={imeiNumber}
+                              placeholder="seprate IMEI number with , ex: 358265010779665,358265010779665   "
+                              onChange={(e) => setImeiNumber(e.target.value)}
+                              // required
+                            ></CFormTextarea>
+                            {/* <span>seprate IMEI number with ","</span> */}
+                          </div>
+                          <div className="mb-3">
+                            <CFormLabel htmlFor="exampleFormControlInput1">Server Field</CFormLabel>
+                            <CFormInput type="text" placeholder="Enter value" />
+                          </div>
+                        </div>
+                      ) : fieldType === 'CUSTOM' ? (
+                        customFields?.map((field, index) => (
+                          <div key={index} className="mb-3">
+                            <CFormLabel htmlFor="exampleFormControlInput1">{field.name}</CFormLabel>
+                            <CFormInput type={field.dataType} placeholder="Enter value" />
+                          </div>
+                        ))
+                      ) : null}
                     </CCol>
                     <CCol className="">
                       <div className="mb-3">
