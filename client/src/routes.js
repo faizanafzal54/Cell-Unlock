@@ -9,6 +9,7 @@ const ManageAccount = React.lazy(() => import('./views/credit/ManageAccount'))
 const AminOrderList = React.lazy(() => import('./views/admin/orders/OrderList'))
 const OrderComplete = React.lazy(() => import('./views/admin/orders/OrderComplete'))
 const AddService = React.lazy(() => import('./views/admin/services/AddService'))
+const ServiceList = React.lazy(() => import('./views/admin/services/ServiceList'))
 
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -74,7 +75,8 @@ const routes = [
   { path: '/orders/edit/:mode', name: 'Add Order', element: AddOrder },
   { path: '/admin/orders/', name: 'Add Order', element: AminOrderList },
   { path: '/admin/orders/edit/:id', name: 'Edit Order', element: OrderComplete },
-  { path: '/admin/services/', name: 'Add Service', element: AddService },
+  { path: '/admin/services', name: 'Services', element: ServiceList },
+  { path: '/admin/services/edit', name: 'Services', element: AddService },
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
