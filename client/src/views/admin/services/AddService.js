@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react'
+
+import { Editor } from 'react-draft-wysiwyg'
+import { EditorState } from 'draft-js'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import CIcon from '@coreui/icons-react'
 import {
   CButton,
@@ -49,6 +53,8 @@ const AddService = () => {
   const [customFields, setCustomFields] = useState([])
   const [fieldName, setFieldName] = useState('')
   const [fieldDataType, setFieldDataType] = useState('')
+  const [features, setFeatures] = useState([])
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -105,6 +111,15 @@ const AddService = () => {
     setCustomFields(updatedFields)
   }
 
+  useEffect(() => {
+    console.log(features, 'featuress:::::::::::')
+  })
+
+  const onEditorStateChange = (editorState) => {
+    setEditorState(editorState)
+    console.log(editorState, 'dassss')
+  }
+
   return (
     <>
       <CRow>
@@ -146,7 +161,6 @@ const AddService = () => {
                           />
                         </div>
                       </div>
-
                       <div className="mb-3">
                         <CFormLabel htmlFor="exampleFormControlInput1">Service Name</CFormLabel>
                         <CFormInput
@@ -163,7 +177,6 @@ const AddService = () => {
                           onChange={(e) => setPrice(e.target.value)}
                         />
                       </div>
-
                       <div className="mb-3">
                         <CFormLabel htmlFor="exampleFormControlInput1">Delivery Time</CFormLabel>
                         <CFormInput
@@ -172,7 +185,6 @@ const AddService = () => {
                           onChange={(e) => setDeliveryTime(e.target.value)}
                         />
                       </div>
-
                       <div className="mb-3">
                         <CFormLabel htmlFor="exampleFormControlInput1">
                           Response Delay Time
@@ -183,7 +195,6 @@ const AddService = () => {
                           onChange={(e) => setResponseDelayTime(e.target.value)}
                         />
                       </div>
-
                       <div className="mb-3">
                         <CFormLabel htmlFor="exampleFormControlInput1">Reseller</CFormLabel>
                         <CFormInput
@@ -291,6 +302,42 @@ const AddService = () => {
                           </ul>
                         </>
                       ) : null}
+                      <div>
+                        <h6>SEO Stuff</h6>
+
+                        <div className="mb-3">
+                          <CFormLabel htmlFor="exampleFormControlInput1">Name</CFormLabel>
+                          <CFormInput
+                            type="text"
+                            placeholder="Enter Service Name"
+                            onChange={(e) => setName(e.target.value)}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <CFormLabel htmlFor="exampleFormControlInput1">Html Title</CFormLabel>
+                          <CFormInput
+                            type="text"
+                            placeholder="Enter Service Name"
+                            onChange={(e) => setName(e.target.value)}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <CFormLabel htmlFor="exampleFormControlInput1">Seo Url Name</CFormLabel>
+                          <CFormInput
+                            type="text"
+                            placeholder="Enter Service Name"
+                            onChange={(e) => setName(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <Editor
+                        editorState={editorState}
+                        toolbarClassName="toolbarClassName"
+                        wrapperClassName="wrapperClassName"
+                        editorClassName="editorClassName"
+                        onEditorStateChange={() => onEditorStateChange(editorState)}
+                      />
+                      ;
                     </CCol>
 
                     <CCol className="">
@@ -397,20 +444,54 @@ const AddService = () => {
                         <CFormLabel htmlFor="exampleFormControlInput1">Features</CFormLabel>
 
                         <CFormCheck
-                          id="flexCheckDefault"
+                          id="flexCheckChecked"
                           label="Refund available if code is not found"
+                          value="Refund available if code is not found"
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setFeatures([...features, e.target.value])
+                              : setFeatures(features?.filter((item) => item !== e.target.value))
+                          }
                         />
                         <CFormCheck
                           id="flexCheckChecked"
                           label="Service availble 24x7"
-                          defaultChecked
+                          value="Service availble 24x7"
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setFeatures([...features, e.target.value])
+                              : setFeatures(features?.filter((item) => item !== e.target.value))
+                          }
                         />
-                        <CFormCheck id="flexCheckChecked" label="Unlock guranteed" />
-                        <CFormCheck id="flexCheckChecked" label="No refund for bad requests" />
+                        <CFormCheck
+                          id="flexCheckChecked"
+                          label="Unlock guranteed"
+                          value="Unlock guranteed"
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setFeatures([...features, e.target.value])
+                              : setFeatures(features?.filter((item) => item !== e.target.value))
+                          }
+                        />
+                        <CFormCheck
+                          id="flexCheckChecked"
+                          label="No refund for bad requests"
+                          value="No refund for bad requests"
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setFeatures([...features, e.target.value])
+                              : setFeatures(features?.filter((item) => item !== e.target.value))
+                          }
+                        />
                         <CFormCheck
                           id="flexCheckChecked"
                           label="Working on business days only"
-                          defaultChecked
+                          value="Working on business days only"
+                          onChange={(e) =>
+                            e.target.checked
+                              ? setFeatures([...features, e.target.value])
+                              : setFeatures(features?.filter((item) => item !== e.target.value))
+                          }
                         />
                       </div>
                       <div className="text-end">

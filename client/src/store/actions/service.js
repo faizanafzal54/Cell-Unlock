@@ -4,7 +4,6 @@ import { toastify } from '../services/toastify'
 export const serviceListAction = () => async (dispatch) => {
   try {
     const res = await serviceList()
-    console.log(res)
     if (res.status === 200) {
       dispatch({
         type: 'ServiceList',
