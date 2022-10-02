@@ -56,7 +56,7 @@ const OrderList = () => {
                     <CTableHeaderCell scope="col">Customer Name</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Start Date</CTableHeaderCell>
                     <CTableHeaderCell scope="col">End Date</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">IMEI Numbers</CTableHeaderCell>
+                    {/* <CTableHeaderCell scope="col">IMEI Numbers</CTableHeaderCell> */}
                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                   </CTableRow>
@@ -75,7 +75,7 @@ const OrderList = () => {
                         <CTableDataCell>
                           {new Date(order.toDate).toISOString().split('T')[0]}
                         </CTableDataCell>
-                        {
+                        {/* {
                           <CTableDataCell>
                             <ul>
                               {order.imeiNumbers.map((number, index) => (
@@ -83,7 +83,7 @@ const OrderList = () => {
                               ))}
                             </ul>
                           </CTableDataCell>
-                        }
+                        } */}
                         <CTableDataCell>
                           {order.status === 'Confirmed' ? (
                             <CBadge className="pt-2 pb-2" color="warning">

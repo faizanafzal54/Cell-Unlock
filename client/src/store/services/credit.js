@@ -11,3 +11,11 @@ const setHeader = {
 export const addStripe = (obj) => {
   return request.post(apiUrl + 'users/createPaymentInfo', obj, setHeader)
 }
+
+export const addCredits = (obj) => {
+  return request.post(apiUrl + 'users/purchaseCredits', obj, setHeader)
+}
+
+export const getCredits = (id) => {
+  return request.get(apiUrl + `users/credits/${id}`, setHeader)
+}

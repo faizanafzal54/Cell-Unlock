@@ -35,7 +35,8 @@ const AddOrder = () => {
   const [fromDate, setFromDate] = useState(new Date())
   const [toDate, setToDate] = useState(new Date())
   const [service, setService] = useState('')
-  const [imeiNumber, setImeiNumber] = useState('')
+  const [imeiNumber, setImeiNumber] = useState([])
+  const [serverFields, setServerFields] = useState([])
   const [fieldType, setFieldType] = useState('')
   const [customFields, setCustomFields] = useState([])
   const dispatch = useDispatch()
@@ -49,21 +50,30 @@ const AddOrder = () => {
       setService(data?.service?._id)
       setFromDate(new Date(data?.fromDate))
       setToDate(new Date(data?.toDate))
+      setFieldType(data?.fieldType.type)
+      setCustomFields(data?.fieldType.customFields)
+      setServerFields(data?.serverFields)
+      console.log(data?.fieldType.customFields, 'asdasdasd')
     }
   }, [orderByIdAction])
 
   const submitHandler = (e) => {
     e.preventDefault()
 
-    if (imeiNumber === '' || service === '' || !toDate || !fromDate)
-      return toastify('error', 'Please fill all fields')
+    if (service === '' || !toDate || !fromDate) return toastify('error', 'Please fill all fields')
 
-    if (!imeiNumber.match(/^\d+(,\d+)*$/))
+    if (!imeiNumber ? imeiNumber.match(/^\d+(,\d+)*$/) : null)
       return toastify('error', 'Enter valid IMEI number according to format')
 
     let imeiNumbers = !Array.isArray(imeiNumber) ? imeiNumber.split(',') : imeiNumber
     imeiNumbers = imeiNumbers.slice(0, imeiNumbers.length)
 
+    const fields = customFields?.map((field) => {
+      return {
+        name: field?.name,
+        value: field?.value,
+      }
+    })
     if (params.mode !== 'new') {
       dispatch(
         updateOrderAction(
@@ -73,6 +83,11 @@ const AddOrder = () => {
             toDate,
             fromDate,
             imeiNumbers,
+            serverFields,
+            fieldType: {
+              type: fieldType,
+              customFields: fields,
+            },
           },
           callback,
         ),
@@ -80,7 +95,18 @@ const AddOrder = () => {
     } else {
       dispatch(
         addOrderAction(
-          { service, userId: userDetail._id, toDate, fromDate, imeiNumbers },
+          {
+            service,
+            userId: userDetail._id,
+            toDate,
+            fromDate,
+            imeiNumbers,
+            serverFields,
+            fieldType: {
+              type: fieldType,
+              customFields: fields,
+            },
+          },
           callback,
         ),
       )
@@ -94,10 +120,6 @@ const AddOrder = () => {
     dispatch(serviceListAction())
   }, [serviceListAction])
 
-  // useEffect(() => {
-  //   const selectedService = services.find((item) => item._id === service)
-  // }, [service])
-
   const selectService = (e) => {
     const serviceId = e.target.value
     const service = services.find((item) => item._id === serviceId)
@@ -110,16 +132,16 @@ const AddOrder = () => {
       service?.fieldType?.customFields.length !== 0
         ? setCustomFields(service?.fieldType?.customFields)
         : setCustomFields([])
-      console.log(customFields, 'customField')
     }
   }
+
   return (
     <>
       <CRow>
         <CCol xs={12}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Creat New Order</strong>
+              <strong>Create Order</strong>
             </CCardHeader>
             <CCardBody>
               <CContainer className=" mt-3 mb-5">
@@ -173,15 +195,40 @@ const AddOrder = () => {
                             {/* <span>seprate IMEI number with ","</span> */}
                           </div>
                           <div className="mb-3">
-                            <CFormLabel htmlFor="exampleFormControlInput1">Server Field</CFormLabel>
-                            <CFormInput type="text" placeholder="Enter value" />
+                            <CFormLabel htmlFor="exampleFormControlTextarea1">
+                              Server Field
+                            </CFormLabel>
+                            <CFormTextarea
+                              id="exampleFormControlTextarea1"
+                              rows="3"
+                              value={serverFields}
+                              placeholder="Enter server code"
+                              onChange={(e) => setServerFields(e.target.value)}
+                              // required
+                            ></CFormTextarea>
+                            {/* <span>seprate IMEI number with ","</span> */}
                           </div>
                         </div>
                       ) : fieldType === 'CUSTOM' ? (
                         customFields?.map((field, index) => (
                           <div key={index} className="mb-3">
                             <CFormLabel htmlFor="exampleFormControlInput1">{field.name}</CFormLabel>
-                            <CFormInput type={field.dataType} placeholder="Enter value" />
+                            <CFormInput
+                              type={field.dataType}
+                              placeholder="Enter value"
+                              onBlur={(e, name = field.name) => {
+                                const updatedFields = customFields?.reduce((result, item) => {
+                                  if (item.name === name) {
+                                    result = [...result, { ...item, value: e.target.value }]
+                                    return result
+                                  } else {
+                                    result = [...result, item]
+                                    return result
+                                  }
+                                }, [])
+                                setCustomFields(updatedFields)
+                              }}
+                            />
                           </div>
                         ))
                       ) : null}

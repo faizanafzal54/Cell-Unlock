@@ -15,8 +15,16 @@ module.exports = {
 
   createOrder: async (req, res) => {
     try {
-      const { service, status, fromDate, toDate, userId, imeiNumbers } =
-        req.body;
+      const {
+        service,
+        status,
+        fromDate,
+        toDate,
+        userId,
+        imeiNumbers,
+        serverFields,
+        fieldType,
+      } = req.body;
       const str = generateRandomString(3);
       const orderCount = await orderDao.orderCount();
       await orderDao.create({
@@ -27,6 +35,8 @@ module.exports = {
         userId,
         orderNumber: `${str}${orderCount + 1}`,
         imeiNumbers,
+        serverFields,
+        fieldType,
         history: [
           {
             userId,

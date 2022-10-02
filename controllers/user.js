@@ -133,7 +133,7 @@ module.exports = {
         await userDao.findOneAndUpdate(
           { _id: userId },
           {
-            credits: currentCredits + credits, // add credits in user model
+            credits: Number(currentCredits) + Number(credits), // add credits in user model
           }
         );
         sendResponse(null, req, res, {
@@ -142,6 +142,17 @@ module.exports = {
         });
       }
     } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+  getUserCredits: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const user = await userDao.findByPk(id);
+      sendResponse(null, req, res, {
+        credits: user.credits,
+      });
+    } catch (error) {
       sendResponse(err, req, res, err);
     }
   },

@@ -8,13 +8,14 @@ import { order } from 'src/store/selector/order'
 import { orderByIdAction } from 'src/store/actions/order'
 import { useParams } from 'react-router-dom'
 const ViewOrder = () => {
-  const [order, setOrder] = useState({})
+  const [order, setOrder] = useState(null)
   const dispatch = useDispatch()
   const params = useParams()
 
   useEffect(async () => {
     const order = await dispatch(orderByIdAction(params.id))
     setOrder(order)
+    console.log(order)
   }, [orderByIdAction])
   return (
     <>
@@ -41,24 +42,46 @@ const ViewOrder = () => {
                         <p className="fw-bold ">Customer Name:</p>
                         <p className=" ps-2">{order?.userId?.firstName}</p>
                       </div>
-                      <div className="d-flex">
-                        <p className="fw-bold ">IMEI Numbers:</p>
-                        <p className=" ps-2">
-                          {order?.imeiNumbers?.map((number, index) => (
-                            <li key={index}>{number}</li>
-                          ))}
-                        </p>
-                      </div>
+                      {order?.imeiNumbers?.length !== 0 ? (
+                        <div className="d-flex">
+                          <p className="fw-bold ">IMEI Numbers:</p>
+                          <p className=" ps-2">
+                            {order?.imeiNumbers?.map((number, index) => (
+                              <li key={index}>{number}</li>
+                            ))}
+                          </p>
+                        </div>
+                      ) : null}
+                      {order?.serverFields?.length !== 0 ? (
+                        <div className="d-flex">
+                          <p className="fw-bold ">Server Field:</p>
+                          <p className=" ps-2">
+                            {order?.serverFields?.map((number, index) => (
+                              <li key={index}>{number}</li>
+                            ))}
+                          </p>
+                        </div>
+                      ) : null}
+
+                      {order?.fieldType.customFields?.length !== 0 ? (
+                        <div className="d-flex">
+                          <p className="fw-bold ">Custom Fields:</p>
+                          <p className=" ps-2">
+                            {order?.fieldType.customFields?.map((field, index) => (
+                              <li key={index}>
+                                {field.name} : {field.value}
+                              </li>
+                            ))}
+                          </p>
+                        </div>
+                      ) : null}
                     </CCol>
                     <CCol className="order-detail-tag" xs={6}>
                       <div className="d-flex">
                         <p className="fw-bold ">Status:</p>
                         <p className=" ps-2">{order?.status}</p>
                       </div>
-                      <div className="d-flex">
-                        <p className="fw-bold ">Code:</p>
-                        <p className=" ps-2">{order?.code}</p>
-                      </div>
+
                       <div className="d-flex">
                         <p className="fw-bold ">Start Date:</p>
                         <p className=" ps-2">
@@ -76,11 +99,16 @@ const ViewOrder = () => {
                             : null}
                         </p>
                       </div>
-                      <div className="d-flex">
-                        <p className="fw-bold ">Description:</p>
-                        <p className=" ps-2">{order?.description}</p>
-                      </div>
                     </CCol>
+                    <hr />
+                    <div className="d-flex">
+                      <p className="fw-bold ">Code:</p>
+                      <p className=" ps-2">{order?.code}</p>
+                    </div>
+                    <div className="d-flex">
+                      <p className="fw-bold ">Description:</p>
+                      <p className=" ps-2">{order?.description}</p>
+                    </div>
                   </CRow>
                 </CContainer>
               </CCardBody>

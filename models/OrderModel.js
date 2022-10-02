@@ -19,6 +19,22 @@ const orderSchema = new Schema({
       type: String,
     },
   ],
+  serverFields: [
+    {
+      type: String,
+    },
+  ],
+
+  fieldType: {
+    type: { type: String, enum: ["SINGLE", "BOTH", "MULTIPLE", "CUSTOM"] },
+    customFields: [
+      {
+        name: String,
+        value: String, //number, text
+      },
+    ],
+  },
+
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
