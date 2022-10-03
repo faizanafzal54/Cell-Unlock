@@ -10,6 +10,8 @@ const AminOrderList = React.lazy(() => import('./views/admin/orders/OrderList'))
 const OrderComplete = React.lazy(() => import('./views/admin/orders/OrderComplete'))
 const AddService = React.lazy(() => import('./views/admin/services/AddService'))
 const ServiceList = React.lazy(() => import('./views/admin/services/ServiceList'))
+const UserList = React.lazy(() => import('./views/admin/users/UserList'))
+const UserEdit = React.lazy(() => import('./views/admin/users/UserEdit'))
 
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -76,7 +78,9 @@ const routes = [
   { path: '/admin/orders/', name: 'Add Order', element: AminOrderList },
   { path: '/admin/orders/edit/:id', name: 'Edit Order', element: OrderComplete },
   { path: '/admin/services', name: 'Services', element: ServiceList },
-  { path: '/admin/services/edit', name: 'Services', element: AddService },
+  { path: '/admin/services/edit', name: 'Add Service', element: AddService },
+  { path: '/admin/users', name: 'Users', element: UserList },
+  { path: '/admin/users/edit/:id', name: 'Edit User', element: UserEdit },
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },

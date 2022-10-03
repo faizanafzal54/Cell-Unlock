@@ -1,4 +1,4 @@
-import { login, register } from 'src/store/services/user'
+import { login, register, userList, userById } from 'src/store/services/user'
 import { toastify } from '../services/toastify'
 
 export const loginAction = (obj, callback) => async (dispatch) => {
@@ -46,5 +46,32 @@ export const logoutAction = (callback) => async (dispatch) => {
   })
   if (callback) {
     callback()
+  }
+}
+
+// admin actions
+export const userListAction = (limit, page) => async (dispatch) => {
+  try {
+    const res = await userList(limit, page)
+    if (res.status === 200) {
+      dispatch({
+        type: 'UserList',
+        payload: {
+          users: res.data.data.users,
+          totalPages: res.data.data.totalPages,
+        },
+      })
+    }
+  } catch (err) {
+    toastify('error', err?.response?.data?.err.message)
+  }
+}
+
+export const userByIdAction = (id) => async (dispatch) => {
+  try {
+    const res = await userById(id)
+    return res.data.data.user
+  } catch (err) {
+    toastify('error', err?.response?.data?.err.message)
   }
 }

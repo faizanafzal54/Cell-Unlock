@@ -164,4 +164,23 @@ module.exports = {
       throw error;
     }
   },
+
+  find: async (startIndex, endIndex) => {
+    try {
+      return await User.find({}).skip(startIndex).limit(endIndex);
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
+  totalUsers: async (req, res) => {
+    try {
+      return await User.countDocuments({ role: "USER" });
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
 };

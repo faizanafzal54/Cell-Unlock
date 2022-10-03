@@ -88,8 +88,6 @@ module.exports = {
       const startIndex = (page - 1) * limit;
       const endIndex = page * limit;
 
-      console.log({ startIndex, endIndex });
-
       const orders = await orderDao.getPaginatedOrders(startIndex, limit);
       const orderCount = await orderDao.orderCount();
 

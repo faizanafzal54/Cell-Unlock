@@ -8,3 +8,13 @@ export const login = (obj) => {
 export const register = (obj) => {
   return request.post(apiUrl + 'users/register', obj)
 }
+
+// admin services
+
+export const userList = (limit, page) => {
+  return request.get(apiUrl + `users/admin/user-list?page=${page}&limit=${limit}`)
+}
+
+export const userById = (id) => {
+  return request.get(apiUrl + `users/admin/user/${id}`)
+}

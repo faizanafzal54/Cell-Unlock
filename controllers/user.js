@@ -152,7 +152,36 @@ module.exports = {
       sendResponse(null, req, res, {
         credits: user.credits,
       });
-    } catch (error) {
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+  getAllUsers: async (req, res) => {
+    try {
+      const page = parseInt(req.query.page ? req.query.page : 1);
+      const limit = parseInt(req.query.limit ? req.query.limit : 2);
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+
+      const users = await userDao.find(startIndex, limit);
+      const totalUsers = await userDao.totalUsers();
+
+      const totalPages = Math.ceil(totalUsers / limit);
+      sendResponse(null, req, res, {
+        users,
+        totalPages,
+      });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+  findUser: async (req, res) => {
+    try {
+      const user = await userDao.findByPk(req.params.id);
+      sendResponse(null, req, res, {
+        user,
+      });
+    } catch (err) {
       sendResponse(err, req, res, err);
     }
   },

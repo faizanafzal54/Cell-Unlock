@@ -6,6 +6,8 @@ const defaultState = {
     email: '',
   },
   token: '',
+  users: [],
+  totalPages: 0,
 }
 
 const userReducer = (state = defaultState, action) => {
@@ -32,6 +34,13 @@ const userReducer = (state = defaultState, action) => {
         user: { id: '', displayName: '', email: '', role: '' },
         token: '',
         refreshToken: '',
+      }
+
+    case 'UserList':
+      return {
+        ...state,
+        users: action.payload.users,
+        totalPages: action.payload.totalPages,
       }
     case 'RefreshToken':
       return {
