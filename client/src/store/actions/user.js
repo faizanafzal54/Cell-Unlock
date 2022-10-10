@@ -9,9 +9,7 @@ export const loginAction = (obj, callback) => async (dispatch) => {
         type: 'Login',
         payload: {
           user: {
-            name: res.data.data.user.name,
-            email: res.data.data.user.email,
-            _id: res.data.data.user._id,
+            ...res.data.data.user,
           },
           token: res.data.data.token,
         },

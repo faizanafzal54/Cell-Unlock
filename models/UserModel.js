@@ -45,6 +45,11 @@ const userSchema = new Schema({
     type: String,
     enum: ["ADMIN", "USER"],
   },
+  userType: {
+    type: String,
+    enum: ["DEALER", "USER", "RESELLER"],
+    default: "USER",
+  },
   phone: {
     type: String,
   },

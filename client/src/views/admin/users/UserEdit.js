@@ -26,9 +26,10 @@ import 'react-toastify/dist/ReactToastify.css'
 const UserEdit = () => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
-  const [status, setStatus] = useState('')
+  const [isActive, setIsActive] = useState(true)
   const [credits, setCredits] = useState(0)
   const [stripeAccount, setStripeAccount] = useState('')
+  const [userType, setUserType] = useState('USER')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const params = useParams()
@@ -38,9 +39,10 @@ const UserEdit = () => {
 
     setFirstName(data?.firstName)
     setLastName(data?.lastName)
-    setStatus(data?.isActive)
+    setIsActive(data?.isActive)
     setCredits(data?.credits)
     setStripeAccount(data?.isStripeAccountActive)
+    setUserType(data.userType ?? 'USER')
   }, [userByIdAction])
 
   const submitHandler = (e) => {
@@ -53,9 +55,9 @@ const UserEdit = () => {
           {
             firstName,
             lastName,
-            isActive: status,
+            isActive: isActive,
             credits,
-            isStripeAccountActive: stripeAccount,
+            userType,
           },
           callback,
         ),
@@ -93,16 +95,17 @@ const UserEdit = () => {
                         <CFormInput
                           type="text"
                           value={credits}
-                          placeholder="Enter First Name"
-                          onChange={(e) => setCredits(e.target.value)}
+                          placeholder="Enter Credits"
+                          // onChange={(e) => setCredits(e.target.value)}
                         />
                       </div>
                       <div className="mb-3 ">
                         <CFormLabel htmlFor="exampleFormControlText">Status</CFormLabel>
                         <CFormSelect
-                          onChange={(e) => setStatus(e.target.value)}
+                          onChange={(e) => setIsActive(e.target.value)}
                           required
                           id="validationCustom01"
+                          value={isActive}
                         >
                           <option>Select Status</option>
 
@@ -121,8 +124,23 @@ const UserEdit = () => {
                           onChange={(e) => setLastName(e.target.value)}
                         />
                       </div>
-
                       <div className="mb-3 ">
+                        <CFormLabel htmlFor="userType">User Type</CFormLabel>
+                        <CFormSelect
+                          onChange={(e) => setUserType(e.target.value)}
+                          required
+                          value={userType}
+                          id="userType"
+                        >
+                          <option>Select User Type</option>
+
+                          <option value="DEALER"> Dealer</option>
+                          <option value="RESELLER"> Reseller</option>
+                          <option value="USER"> User</option>
+                        </CFormSelect>
+                      </div>
+
+                      {/* <div className="mb-3 ">
                         <CFormLabel htmlFor="exampleFormControlText">
                           Select Account Status{' '}
                         </CFormLabel>
@@ -136,7 +154,7 @@ const UserEdit = () => {
                           <option value={true}> Active</option>
                           <option value={false}> Disable</option>
                         </CFormSelect>
-                      </div>
+                      </div> */}
                       <div className=" pt-3  text-end">
                         <CButton
                           type="submit"

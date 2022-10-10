@@ -61,13 +61,19 @@ const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
-// export const adminRoutes = [
-//   { path: '/', exact: true, name: 'Home' },
-//   { path: '/admin/dashboard', name: 'Dashboard', element: Dashboard },
-//   { path: '/admin/orders/', name: 'Add Order', element: AminOrderList },
-//   { path: '/admin/complete/:id', name: 'Edit Order', element: OrderComplete },
-// ]
-const routes = [
+
+export const adminRoutes = [
+  { path: '/', exact: true, name: 'Home' },
+  { path: '/admin/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/admin/orders/', name: 'Add Order', element: AminOrderList },
+  { path: '/admin/orders/edit/:id', name: 'Edit Order', element: OrderComplete },
+  { path: '/admin/services', name: 'Services', element: ServiceList },
+  { path: '/admin/services/edit', name: 'Add Service', element: AddService },
+  { path: '/admin/users', name: 'Users', element: UserList },
+  { path: '/admin/users/edit/:id', name: 'Edit User', element: UserEdit },
+]
+
+export const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/orders', name: 'Orders', element: OrderList },
@@ -75,12 +81,6 @@ const routes = [
   { path: '/credits/buy', name: 'Buy Credits', element: BuyCredits },
   { path: '/credits/manage-account', name: 'Manage Account', element: ManageAccount },
   { path: '/orders/edit/:mode', name: 'Add Order', element: AddOrder },
-  { path: '/admin/orders/', name: 'Add Order', element: AminOrderList },
-  { path: '/admin/orders/edit/:id', name: 'Edit Order', element: OrderComplete },
-  { path: '/admin/services', name: 'Services', element: ServiceList },
-  { path: '/admin/services/edit', name: 'Add Service', element: AddService },
-  { path: '/admin/users', name: 'Users', element: UserList },
-  { path: '/admin/users/edit/:id', name: 'Edit User', element: UserEdit },
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
@@ -125,4 +125,3 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
 ]
-export default routes

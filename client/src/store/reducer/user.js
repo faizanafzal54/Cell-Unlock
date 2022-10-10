@@ -4,6 +4,8 @@ const defaultState = {
     _id: '',
     name: '',
     email: '',
+    role: '',
+    isActive: false,
   },
   token: '',
   users: [],

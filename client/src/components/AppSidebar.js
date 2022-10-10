@@ -30,6 +30,7 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand style={{ backgroundColor: '#341E9D' }} className="d-none d-md-flex" to="/">
+        <h6>GMS Portal</h6>
         {/* <CIcon className="sidebar-brand-full" icon={logo} height={35} /> */}
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
       </CSidebarBrand>

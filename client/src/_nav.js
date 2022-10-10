@@ -31,32 +31,14 @@ const _nav = [
       color: 'info',
       text: 'NEW',
     },
+    access: 'USER',
   },
   {
     component: CNavItem,
     name: 'Orders',
     to: '/orders',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Admin Orders',
-    to: 'admin/orders',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-  },
-
-  {
-    component: CNavItem,
-    name: 'Admin Services',
-    to: 'admin/services',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-  },
-
-  {
-    component: CNavItem,
-    name: 'Admin Users',
-    to: 'admin/users',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    access: 'USER',
   },
   {
     component: CNavGroup,
@@ -75,6 +57,41 @@ const _nav = [
         to: '/credits/manage-account',
       },
     ],
+    access: 'USER',
+  },
+  {
+    component: CNavItem,
+    name: 'Dashboard',
+    to: '/dashboard',
+    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+      text: 'NEW',
+    },
+    access: 'ADMIN',
+  },
+  {
+    component: CNavItem,
+    name: 'Orders',
+    to: 'admin/orders',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    access: 'ADMIN',
+  },
+
+  {
+    component: CNavItem,
+    name: 'Services',
+    to: 'admin/services',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    access: 'ADMIN',
+  },
+
+  {
+    component: CNavItem,
+    name: 'Users',
+    to: 'admin/users',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    access: 'ADMIN',
   },
 
   // {

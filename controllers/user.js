@@ -3,13 +3,7 @@ const bcrypt = require("bcryptjs");
 const userDao = require("../daos/user");
 const { SALTROUNDS, ROLEUSER } = require("../constants/constants");
 const paymentsDao = require("../daos/payments");
-const {
-  createCustomer,
-  createPaymentMethod,
-  attachPaymentMethod,
-  createPaymentIntent,
-  confirmPaymentIntent,
-} = require("../services/stripe");
+const { createCustomer, createPaymentMethod, attachPaymentMethod, createPaymentIntent, confirmPaymentIntent } = require("../services/stripe");
 
 module.exports = {
   login: async (req, res) => {
@@ -17,7 +11,7 @@ module.exports = {
       const { email, password } = req.body;
       const user = await userDao.findOneByEmail(email);
 
-      if (user !== null && user.role === ROLEUSER) {
+      if (user !== null) {
         if (user.isActive === false) {
           let err = new Error("Account has been deleted");
           err.statusCode = 403;
@@ -87,11 +81,7 @@ module.exports = {
       const user = await userDao.findByPk(userId);
       if (user) {
         const stripeuser = await createCustomer(user.email);
-        const paymentMethod = await createPaymentMethod(
-          expiry,
-          cardNumber,
-          cvc
-        );
+        const paymentMethod = await createPaymentMethod(expiry, cardNumber, cvc);
         await attachPaymentMethod(paymentMethod.id, stripeuser.id);
         await userDao.findOneAndUpdate(
           { _id: userId },

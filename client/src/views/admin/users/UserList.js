@@ -48,7 +48,7 @@ const UserList = () => {
                     <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Credits</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">StripeAccount</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Stripe Account</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
