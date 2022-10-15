@@ -16,7 +16,7 @@ export const addOrder = (obj) => {
 }
 
 export const serviceList = () => {
-  return request.get(apiUrl + 'services', setHeader)
+  return request.post(apiUrl + 'services', setHeader)
 }
 
 export const orderById = (id) => {
@@ -29,10 +29,14 @@ export const updateOrder = (id, obj) => {
 
 // admin services
 
-export const adminOrderList = (limit, page) => {
-  return request.get(apiUrl + `orders/admin/list?page=${page}&limit=${limit}`, setHeader)
+export const adminOrderList = (obj) => {
+  return request.post(apiUrl + 'orders/admin/list', obj, setHeader)
 }
 
 export const adminUpdateOrder = (id, obj) => {
   return request.patch(apiUrl + `orders/admin/${id}`, obj, setHeader)
+}
+
+export const adminUsersList = () => {
+  return request.get(apiUrl + `users/admin/users`, setHeader)
 }

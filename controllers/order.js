@@ -25,6 +25,7 @@ module.exports = {
         serverFields,
         fieldType,
       } = req.body;
+      // here we will check the user own credits and service credits
       const str = generateRandomString(3);
       const orderCount = await orderDao.orderCount();
       await orderDao.create({
@@ -82,13 +83,37 @@ module.exports = {
   // admin controllers
 
   adminGetOrders: async (req, res) => {
+    const { status, userId, orderNumber } = req.body;
     try {
-      const page = parseInt(req.query.page ? req.query.page : 1);
-      const limit = parseInt(req.query.limit ? req.query.limit : 2);
+      const page = parseInt(req.body.page ? req.body.page : 1);
+      const limit = parseInt(req.body.limit ? req.body.limit : 2);
       const startIndex = (page - 1) * limit;
-      const endIndex = page * limit;
 
-      const orders = await orderDao.getPaginatedOrders(startIndex, limit);
+      let query = {};
+      if (status) {
+        query = {
+          ...query,
+          status,
+        };
+      }
+      if (userId) {
+        query = {
+          ...query,
+          userId,
+        };
+      }
+      if (orderNumber) {
+        query = {
+          ...query,
+          orderNumber: { $regex: `^${orderNumber}$`, $options: "i" },
+        };
+      }
+      console.log(query, "query");
+      const orders = await orderDao.getPaginatedOrders(
+        query,
+        startIndex,
+        limit
+      );
       const orderCount = await orderDao.orderCount();
 
       const totalPages = orderCount / limit;
@@ -96,7 +121,7 @@ module.exports = {
         orders,
         totalPages,
       });
-    } catch (error) {
+    } catch (err) {
       sendResponse(err, req, res, err);
     }
   },

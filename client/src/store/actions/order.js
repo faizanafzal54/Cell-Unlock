@@ -6,6 +6,7 @@ import {
   updateOrder,
   adminOrderList,
   adminUpdateOrder,
+  adminUsersList,
 } from 'src/store/services/order'
 import { toastify } from '../services/toastify'
 
@@ -69,7 +70,7 @@ export const updateOrderAction = (id, obj, callback) => async (dispatch) => {
 export const serviceListAction = () => async (dispatch) => {
   try {
     const res = await serviceList()
-    if (res.status === 200) {
+    if (res.status === 201) {
       dispatch({
         type: 'ServiceList',
         payload: {
@@ -84,10 +85,10 @@ export const serviceListAction = () => async (dispatch) => {
 
 // admin actions
 
-export const adminOrderListAction = (limit, page) => async (dispatch) => {
+export const adminOrderListAction = (obj) => async (dispatch) => {
   try {
-    const res = await adminOrderList(limit, page)
-    if (res.status === 200) {
+    const res = await adminOrderList(obj)
+    if (res.status === 201) {
       dispatch({
         type: 'AdminOrdersList',
         payload: {
@@ -107,6 +108,22 @@ export const adminUpdateOrderAction = (id, obj, callback) => async (dispatch) =>
     if (res.status === 200) {
       toastify('success', res?.data?.data.message)
       callback()
+    }
+  } catch (err) {
+    toastify('error', err?.response?.data?.err.message)
+  }
+}
+
+export const adminUsersListAction = () => async (dispatch) => {
+  try {
+    const res = await adminUsersList()
+    if (res.status === 200) {
+      dispatch({
+        type: 'AdminUsers',
+        payload: {
+          users: res.data.data.users,
+        },
+      })
     }
   } catch (err) {
     toastify('error', err?.response?.data?.err.message)

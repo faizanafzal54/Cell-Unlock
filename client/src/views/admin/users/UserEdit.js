@@ -17,7 +17,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { userByIdAction } from 'src/store/actions/user'
+import { userByIdAction, updateUserAction } from 'src/store/actions/user'
 
 import { ToastContainer } from 'react-toastify'
 import { toastify } from 'src/store/services/toastify'
@@ -48,21 +48,19 @@ const UserEdit = () => {
   const submitHandler = (e) => {
     e.preventDefault()
 
-    if (params.mode !== 'new') {
-      dispatch(
-        updateUserAction(
-          params.mode,
-          {
-            firstName,
-            lastName,
-            isActive: isActive,
-            credits,
-            userType,
-          },
-          callback,
-        ),
-      )
-    }
+    dispatch(
+      updateUserAction(
+        params.id,
+        {
+          firstName,
+          lastName,
+          isActive: isActive,
+          credits,
+          userType,
+        },
+        callback,
+      ),
+    )
   }
   const callback = () => {
     navigate('/admin/users')
@@ -96,7 +94,7 @@ const UserEdit = () => {
                           type="text"
                           value={credits}
                           placeholder="Enter Credits"
-                          // onChange={(e) => setCredits(e.target.value)}
+                          onChange={(e) => setCredits(e.target.value)}
                         />
                       </div>
                       <div className="mb-3 ">

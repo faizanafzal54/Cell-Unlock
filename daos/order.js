@@ -73,9 +73,9 @@ module.exports = {
       throw error;
     }
   },
-  getPaginatedOrders: async (startIndex, endIndex) => {
+  getPaginatedOrders: async (query, startIndex, endIndex) => {
     try {
-      const response = await Order.find()
+      const response = await Order.find(query)
         .populate({
           path: "userId",
           select: "firstName",

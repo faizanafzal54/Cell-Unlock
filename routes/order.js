@@ -16,7 +16,7 @@ router.patch("/:id", verifyToken, updateOrder);
 
 // admin routes
 
-router.get("/admin/list", adminGetOrders);
+router.post("/admin/list", adminGetOrders);
 router.patch("/admin/:id", verifyToken, adminUpdateOrder);
 
 module.exports = router;

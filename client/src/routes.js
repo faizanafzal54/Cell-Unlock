@@ -66,9 +66,12 @@ export const adminRoutes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/admin/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/admin/orders/', name: 'Add Order', element: AminOrderList },
+
+  { path: '/admin/orders/:id', name: 'Orders View', element: ViewOrder },
+
   { path: '/admin/orders/edit/:id', name: 'Edit Order', element: OrderComplete },
   { path: '/admin/services', name: 'Services', element: ServiceList },
-  { path: '/admin/services/edit', name: 'Add Service', element: AddService },
+  { path: '/admin/services/:mode', name: 'Add Service', element: AddService },
   { path: '/admin/users', name: 'Users', element: UserList },
   { path: '/admin/users/edit/:id', name: 'Edit User', element: UserEdit },
 ]

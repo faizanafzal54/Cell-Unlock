@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { Editor } from 'react-draft-wysiwyg'
-import { EditorState, ContentState, convertFromHTML, convertToRaw } from 'draft-js'
+import ReactQuill from 'react-quill'
 
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import 'react-quill/dist/quill.snow.css'
+
 import CIcon from '@coreui/icons-react'
 import {
   CButton,
@@ -32,10 +32,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import { cilDelete, cilMedicalCross } from '@coreui/icons'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { addServiceAction } from 'src/store/actions/service'
+import { addServiceAction, serviceByIdAction, updateServiceAction } from 'src/store/actions/service'
 
 const AddService = () => {
-  const [servicetype, setServicetype] = useState('IMEI')
+  const [serviceType, setServicetype] = useState('IMEI')
   const [fieldType, setFieldType] = useState('SINGLE')
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
@@ -50,7 +50,7 @@ const AddService = () => {
   const [dealerPrice, setDealerPrice] = useState('')
   const [resellerPrice, setResellerPrice] = useState('')
   const [userPrice, setUserPrice] = useState('')
-  const [tremsCond, setTremsCond] = useState(false)
+  const [tremsCond, setTremsCond] = useState(true)
   const [orderVerification, setOrderVerification] = useState(false)
   const [pendingOrderCancel, setPendingOrderCancel] = useState(false)
   const [duplicateIMEI, setDuplicateIMEI] = useState(false)
@@ -66,17 +66,54 @@ const AddService = () => {
   const [categoryHtml, setCategoryHtml] = useState('')
   const [categoryUrl, setCategoryUrl] = useState('')
 
-  const [editorState, setEditorState] = useState(EditorState.createEmpty())
+  useEffect(async () => {
+    if (params.mode !== 'add') {
+      const data = await dispatch(serviceByIdAction(params.mode))
+      console.log(data)
+      setServicetype(data?.serviceType)
+      setName(data?.name)
+      setPrice(data?.price)
+      setSupplier(data?.price)
+      setCostPrice(data?.costPrice)
+      setDeliveryTime(data?.deliveryTime)
+      setOrderCancelTime(data?.orderCancelTime)
+      setOrderVerfiyTime(data?.orderVerfiyTime)
+      setRedirectUrl(data?.redirectUrl)
+      setResponseDelayTime(data?.responseDelayTime)
+      setDealerPrice(data?.credits?.DEALER)
+      setResellerPrice(data?.credits.RESELLER)
+      setUserPrice(data?.credits.USER)
+      setSeoName(data?.seoInfo?.name)
+      setSeoHtml(data?.seoInfo.htmlTitle)
+      setSeoUrl(data?.seoInfo.urlName)
+      setCategoryName(data?.categoryInfo?.name)
+      setCategoryHtml(data?.categoryInfo?.htmlTitle)
+      setCategoryUrl(data?.categoryInfo?.urlName)
+      setFieldType(data?.fieldType?.type)
+      setCustomFields(data?.fieldType?.customFields)
+      setFeatures(data?.features)
+
+      setTremsCond(data?.tremsCond)
+      setOrderVerification(data?.orderVerification)
+      setPendingOrderCancel(data?.pendingOrderCancel)
+      setDuplicateIMEI(data?.duplicateIMEI)
+      setDisable(data?.isDeleted)
+    }
+  }, [serviceByIdAction])
+
+  const [serviceDesc, setServiceDesc] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const params = useParams()
 
   const submitHandler = (e) => {
     e.preventDefault()
+
     const data = {
       name: name,
-      // description:
+      description: serviceDesc,
       isDeleted: disable,
-      servicetype: servicetype,
+      serviceType,
       fieldType: {
         type: fieldType,
         customFields: customFields,
@@ -117,7 +154,11 @@ const AddService = () => {
       },
     }
 
-    dispatch(addServiceAction(data, callback))
+    if (params.mode === 'add') {
+      dispatch(addServiceAction(data, callback))
+    } else {
+      dispatch(updateServiceAction(params.mode, data, callback))
+    }
   }
 
   const callback = () => {
@@ -139,14 +180,6 @@ const AddService = () => {
     setCustomFields(updatedFields)
   }
 
-  useEffect(() => {
-    console.log(editorState)
-  })
-
-  const onEditorStateChange = (editorState) => {
-    setEditorState(editorState)
-  }
-
   return (
     <>
       <CRow>
@@ -155,7 +188,7 @@ const AddService = () => {
             <CCard className="mb-4">
               <CCardHeader className="d-flex">
                 <div className="mt-2">
-                  <strong>Add Service</strong>
+                  <strong>{params.mode === 'add' ? 'Add Service' : 'Edit Service'} </strong>
                 </div>
                 <div className="ms-auto">
                   <CButton className="m-auto" type="submit" color="light">
@@ -184,12 +217,12 @@ const AddService = () => {
                       <li className="nav-item" role="presentation">
                         <button
                           className="nav-link"
-                          id="profile-tab"
+                          id="detail-tab"
                           data-bs-toggle="tab"
-                          data-bs-target="#profile"
+                          data-bs-target="#detail"
                           type="button"
                           role="tab"
-                          aria-controls="profile"
+                          aria-controls="detail"
                           aria-selected="false"
                         >
                           Detail
@@ -239,27 +272,52 @@ const AddService = () => {
                               </CFormLabel>
 
                               <div className="ms-2">
-                                <CFormCheck
-                                  //   className="ps-5"
-                                  type="radio"
-                                  name="flexRadioDefault11"
-                                  id="IMEI1"
-                                  label="IMEI"
-                                  onChange={(e) => setServicetype(e.target.value)}
-                                  value="IMEI"
-                                  defaultChecked
-                                />
+                                {serviceType === 'IMEI' ? (
+                                  <CFormCheck
+                                    //   className="ps-5"
+                                    type="radio"
+                                    name="flexRadioDefault11"
+                                    id="IMEI1"
+                                    label="IMEI"
+                                    onChange={(e) => setServicetype(e.target.value)}
+                                    value="IMEI"
+                                    defaultChecked
+                                  />
+                                ) : (
+                                  <CFormCheck
+                                    //   className="ps-5"
+                                    type="radio"
+                                    name="flexRadioDefault11"
+                                    id="IMEI1"
+                                    label="IMEI"
+                                    onChange={(e) => setServicetype(e.target.value)}
+                                    value="IMEI"
+                                  />
+                                )}
                               </div>
                               <div>
-                                <CFormCheck
-                                  type="radio"
-                                  className="ms-2"
-                                  name="flexRadioDefault11"
-                                  id="Server1"
-                                  label="Server"
-                                  onChange={(e) => setServicetype(e.target.value)}
-                                  value="SERVER"
-                                />
+                                {serviceType === 'SERVER' ? (
+                                  <CFormCheck
+                                    type="radio"
+                                    className="ms-2"
+                                    name="flexRadioDefault11"
+                                    id="Server1"
+                                    label="Server"
+                                    onChange={(e) => setServicetype(e.target.value)}
+                                    value="SERVER"
+                                    defaultChecked
+                                  />
+                                ) : (
+                                  <CFormCheck
+                                    type="radio"
+                                    className="ms-2"
+                                    name="flexRadioDefault11"
+                                    id="Server1"
+                                    label="Server"
+                                    onChange={(e) => setServicetype(e.target.value)}
+                                    value="SERVER"
+                                  />
+                                )}
                               </div>
                             </div>
                             <div className="mb-3">
@@ -268,6 +326,7 @@ const AddService = () => {
                               </CFormLabel>
                               <CFormInput
                                 type="text"
+                                value={name}
                                 placeholder="Enter Service Name"
                                 onChange={(e) => setName(e.target.value)}
                               />
@@ -276,6 +335,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">Price</CFormLabel>
                               <CFormInput
                                 type="number"
+                                value={price}
                                 placeholder="Enter Price"
                                 onChange={(e) => setPrice(e.target.value)}
                               />
@@ -284,6 +344,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">Cost Price</CFormLabel>
                               <CFormInput
                                 type="number"
+                                value={costPrice}
                                 placeholder="Enter Cost Price"
                                 onChange={(e) => setCostPrice(e.target.value)}
                               />
@@ -292,6 +353,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">Supplier</CFormLabel>
                               <CFormInput
                                 type="text"
+                                value={supplier}
                                 placeholder="Enter Supplier"
                                 onChange={(e) => setSupplier(e.target.value)}
                               />
@@ -303,6 +365,7 @@ const AddService = () => {
                               </CFormLabel>
                               <CFormInput
                                 type="text"
+                                value={redirectUrl}
                                 placeholder="Enter Redirect Url"
                                 onChange={(e) => setRedirectUrl(e.target.value)}
                               />
@@ -311,6 +374,7 @@ const AddService = () => {
                             <div className="mb-3">
                               <CFormSwitch
                                 label="Terms & conditions"
+                                checked={tremsCond}
                                 id="formSwitchCheckChecked"
                                 onChange={(e) => setTremsCond(!tremsCond)}
                               />
@@ -319,6 +383,7 @@ const AddService = () => {
                               <CFormSwitch
                                 label="Pending Order Cancellation"
                                 id="formSwitchCheckChecked"
+                                checked={pendingOrderCancel}
                                 onChange={(e) => setPendingOrderCancel(!pendingOrderCancel)}
                               />
                             </div>
@@ -326,6 +391,7 @@ const AddService = () => {
                               <CFormSwitch
                                 label="Order Varification"
                                 id="formSwitchCheckChecked"
+                                checked={orderVerification}
                                 onChange={(e) => setOrderVerification(!orderVerification)}
                               />
                             </div>
@@ -333,12 +399,14 @@ const AddService = () => {
                               <CFormSwitch
                                 label="Allow Duplicate IMEI"
                                 id="formSwitchCheckChecked"
+                                checked={duplicateIMEI}
                                 onChange={(e) => setDuplicateIMEI(!duplicateIMEI)}
                               />
                             </div>
                             <div className="mb-3">
                               <CFormSwitch
                                 label="Disable"
+                                checked={disable}
                                 id="formSwitchCheckChecked"
                                 onChange={(e) => setDisable(!disable)}
                               />
@@ -351,6 +419,13 @@ const AddService = () => {
                                 id="flexCheckChecked"
                                 label="Refund available if code is not found"
                                 value="Refund available if code is not found"
+                                checked={
+                                  features?.find(
+                                    (item) => item === 'Refund available if code is not found',
+                                  )
+                                    ? true
+                                    : false
+                                }
                                 onChange={(e) =>
                                   e.target.checked
                                     ? setFeatures([...features, e.target.value])
@@ -363,6 +438,11 @@ const AddService = () => {
                                 id="flexCheckChecked"
                                 label="Service availble 24x7"
                                 value="Service availble 24x7"
+                                checked={
+                                  features?.find((item) => item === 'Service availble 24x7')
+                                    ? true
+                                    : false
+                                }
                                 onChange={(e) =>
                                   e.target.checked
                                     ? setFeatures([...features, e.target.value])
@@ -375,6 +455,11 @@ const AddService = () => {
                                 id="flexCheckChecked"
                                 label="Unlock guranteed"
                                 value="Unlock guranteed"
+                                checked={
+                                  features?.find((item) => item === 'Unlock guranteed')
+                                    ? true
+                                    : false
+                                }
                                 onChange={(e) =>
                                   e.target.checked
                                     ? setFeatures([...features, e.target.value])
@@ -387,6 +472,11 @@ const AddService = () => {
                                 id="flexCheckChecked"
                                 label="No refund for bad requests"
                                 value="No refund for bad requests"
+                                checked={
+                                  features?.find((item) => item === 'No refund for bad requests')
+                                    ? true
+                                    : false
+                                }
                                 onChange={(e) =>
                                   e.target.checked
                                     ? setFeatures([...features, e.target.value])
@@ -399,6 +489,11 @@ const AddService = () => {
                                 id="flexCheckChecked"
                                 label="Working on business days only"
                                 value="Working on business days only"
+                                checked={
+                                  features?.find((item) => item === 'Working on business days only')
+                                    ? true
+                                    : false
+                                }
                                 onChange={(e) =>
                                   e.target.checked
                                     ? setFeatures([...features, e.target.value])
@@ -414,48 +509,99 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">Field Type</CFormLabel>
 
                               <div className="ms-2">
-                                <CFormCheck
-                                  type="radio"
-                                  className="me-1"
-                                  name="flexRadioDefault"
-                                  id="Single1"
-                                  label="Single"
-                                  value="SINGLE"
-                                  onChange={(e) => setFieldType(e.target.value)}
-                                  // defaultChecked
-                                />
+                                {fieldType === 'SINGLE' ? (
+                                  <CFormCheck
+                                    type="radio"
+                                    className="me-1"
+                                    name="flexRadioDefault"
+                                    id="Single1"
+                                    label="Single"
+                                    value="SINGLE"
+                                    onChange={(e) => setFieldType(e.target.value)}
+                                    defaultChecked
+                                  />
+                                ) : (
+                                  <CFormCheck
+                                    type="radio"
+                                    className="me-1"
+                                    name="flexRadioDefault"
+                                    id="Single1"
+                                    label="Single"
+                                    value="SINGLE"
+                                    onChange={(e) => setFieldType(e.target.value)}
+                                    // defaultChecked
+                                  />
+                                )}
                               </div>
                               <div>
-                                <CFormCheck
-                                  className="me-1"
-                                  type="radio"
-                                  name="flexRadioDefault"
-                                  id="Both1"
-                                  label="Both"
-                                  value="BOTH"
-                                  onChange={(e) => setFieldType(e.target.value)}
-                                />
+                                {fieldType === 'BOTH' ? (
+                                  <CFormCheck
+                                    className="me-1"
+                                    type="radio"
+                                    name="flexRadioDefault"
+                                    id="Both1"
+                                    label="Both"
+                                    value="BOTH"
+                                    onChange={(e) => setFieldType(e.target.value)}
+                                    defaultChecked
+                                  />
+                                ) : (
+                                  <CFormCheck
+                                    className="me-1"
+                                    type="radio"
+                                    name="flexRadioDefault"
+                                    id="Both1"
+                                    label="Both"
+                                    value="BOTH"
+                                    onChange={(e) => setFieldType(e.target.value)}
+                                  />
+                                )}
                               </div>
                               <div>
-                                <CFormCheck
-                                  type="radio"
-                                  className="me-1"
-                                  name="flexRadioDefault"
-                                  id="Multiple1"
-                                  label="Multiple"
-                                  value="MULTIPLE"
-                                  onChange={(e) => setFieldType(e.target.value)}
-                                />
+                                {fieldType === 'MULTIPLE' ? (
+                                  <CFormCheck
+                                    type="radio"
+                                    className="me-1"
+                                    name="flexRadioDefault"
+                                    id="Multiple1"
+                                    label="Multiple"
+                                    value="MULTIPLE"
+                                    onChange={(e) => setFieldType(e.target.value)}
+                                    defaultChecked
+                                  />
+                                ) : (
+                                  <CFormCheck
+                                    type="radio"
+                                    className="me-1"
+                                    name="flexRadioDefault"
+                                    id="Multiple1"
+                                    label="Multiple"
+                                    value="MULTIPLE"
+                                    onChange={(e) => setFieldType(e.target.value)}
+                                  />
+                                )}
                               </div>
                               <div>
-                                <CFormCheck
-                                  type="radio"
-                                  name="flexRadioDefault"
-                                  id="custom1"
-                                  label="Custom"
-                                  value="CUSTOM"
-                                  onChange={(e) => setFieldType(e.target.value)}
-                                />
+                                {fieldType === 'CUSTOM' ? (
+                                  <CFormCheck
+                                    type="radio"
+                                    name="flexRadioDefault"
+                                    id="custom1"
+                                    label="Custom"
+                                    value="CUSTOM"
+                                    defaultChecked
+                                    onChange={(e) => setFieldType(e.target.value)}
+                                  />
+                                ) : (
+                                  <CFormCheck
+                                    type="radio"
+                                    name="flexRadioDefault"
+                                    id="custom1"
+                                    label="Custom"
+                                    value="CUSTOM"
+                                    onChange={(e) => setFieldType(e.target.value)}
+                                  />
+                                )}
                               </div>
                             </div>
                             {fieldType === 'CUSTOM' ? (
@@ -534,6 +680,7 @@ const AddService = () => {
                               </CFormLabel>
                               <CFormInput
                                 type="text"
+                                value={deliveryTime}
                                 placeholder="Enter Delivery Time"
                                 onChange={(e) => setDeliveryTime(e.target.value)}
                               />
@@ -544,6 +691,7 @@ const AddService = () => {
                               </CFormLabel>
                               <CFormInput
                                 type="number"
+                                value={responseDelayTime}
                                 placeholder="Enter Response Delay Time"
                                 onChange={(e) => setResponseDelayTime(e.target.value)}
                               />
@@ -552,6 +700,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">Reseller</CFormLabel>
                               <CFormInput
                                 type="number"
+                                value={resellerPrice}
                                 placeholder="Enter Reseller Price"
                                 onChange={(e) => setResellerPrice(e.target.value)}
                               />
@@ -560,6 +709,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">Dealer</CFormLabel>
                               <CFormInput
                                 type="number"
+                                value={dealerPrice}
                                 placeholder="Enter Dealer Price"
                                 onChange={(e) => setDealerPrice(e.target.value)}
                               />
@@ -568,6 +718,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">User</CFormLabel>
                               <CFormInput
                                 type="number"
+                                value={userPrice}
                                 placeholder="Enter User Price"
                                 onChange={(e) => setUserPrice(e.target.value)}
                               />
@@ -579,6 +730,7 @@ const AddService = () => {
                               </CFormLabel>
                               <CFormInput
                                 type="number"
+                                value={orderCancelTime}
                                 placeholder="Enter Order Cancel Time"
                                 onChange={(e) => setOrderCancelTime(e.target.value)}
                               />
@@ -590,6 +742,7 @@ const AddService = () => {
                               </CFormLabel>
                               <CFormInput
                                 type="number"
+                                value={orderVerfiyTime}
                                 placeholder="Enter Order Verify Time"
                                 onChange={(e) => setOrderVerfiyTime(e.target.value)}
                               />
@@ -598,20 +751,12 @@ const AddService = () => {
                         </CRow>
                       </div>
                       <div
-                        className="tab-pane fade"
-                        id="profile"
+                        className="tab-pane fade mt-3"
+                        id="detail"
                         role="tabpanel"
-                        aria-labelledby="profile-tab"
+                        aria-labelledby="detail-tab"
                       >
-                        <Editor
-                          initialEditorState={editorState}
-                          wrapperClassName="demo-wrapper"
-                          editorClassName="demo-editor"
-                          editorStyle={{
-                            border: '1px solid black',
-                          }}
-                          onEditorStateChange={onEditorStateChange}
-                        />
+                        <ReactQuill theme="snow" value={serviceDesc} onChange={setServiceDesc} />
                       </div>
                       <div
                         className="tab-pane fade"
@@ -625,6 +770,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">File Name</CFormLabel>
                               <CFormInput
                                 type="text"
+                                value={seoName}
                                 placeholder="Enter File Name"
                                 onChange={(e) => setSeoName(e.target.value)}
                               />
@@ -633,6 +779,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">Html Title</CFormLabel>
                               <CFormInput
                                 type="text"
+                                value={seoHtml}
                                 placeholder="Enter Html Title"
                                 onChange={(e) => setSeoHtml(e.target.value)}
                               />
@@ -643,6 +790,7 @@ const AddService = () => {
                               </CFormLabel>
                               <CFormInput
                                 type="text"
+                                value={seoUrl}
                                 placeholder="Enter Seo Name"
                                 onChange={(e) => setSeoUrl(e.target.value)}
                               />
@@ -663,6 +811,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">Category</CFormLabel>
                               <CFormInput
                                 type="text"
+                                value={categoryName}
                                 placeholder="Enter Category"
                                 onChange={(e) => setCategoryName(e.target.value)}
                               />
@@ -671,6 +820,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">Html Title</CFormLabel>
                               <CFormInput
                                 type="text"
+                                value={categoryHtml}
                                 placeholder="Enter Html Title"
                                 onChange={(e) => setCategoryHtml(e.target.value)}
                               />
@@ -681,6 +831,7 @@ const AddService = () => {
                               </CFormLabel>
                               <CFormInput
                                 type="text"
+                                value={categoryUrl}
                                 placeholder="Enter Seo Name"
                                 onChange={(e) => setCategoryUrl(e.target.value)}
                               />

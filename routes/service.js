@@ -1,6 +1,13 @@
 const router = require("express").Router();
-const { createService, getAll } = require("../controllers/service");
+const {
+  createService,
+  getAll,
+  serviceById,
+  updateService,
+} = require("../controllers/service");
 
 router.post("/", createService);
-router.get("/", getAll);
+router.post("/list", getAll);
+router.get("/:id", serviceById);
+router.patch("/:id", updateService);
 module.exports = router;

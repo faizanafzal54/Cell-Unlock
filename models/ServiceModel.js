@@ -6,7 +6,7 @@ const serviceSchema = new Schema({
   description: { type: String },
   isDeleted: { type: Boolean, default: false },
 
-  servicetype: { type: String, enum: ["IMEI", "SERVER"] },
+  serviceType: { type: String, enum: ["IMEI", "SERVER"] },
   fieldType: {
     type: { type: String, enum: ["SINGLE", "BOTH", "MULTIPLE", "CUSTOM"] },
     customFields: [

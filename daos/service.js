@@ -1,9 +1,11 @@
 const Service = require("../models/ServiceModel");
 
 module.exports = {
-  find: async (where, update) => {
+  find: async (query, startIndex, endIndex) => {
     try {
-      const response = await Service.find();
+      const response = await Service.find(query)
+        .skip(startIndex)
+        .limit(endIndex);
       return response;
     } catch (err) {
       let error = new Error(err);
@@ -58,6 +60,16 @@ module.exports = {
     try {
       const service = await Service.findById(id);
       return service;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
+
+  totalServices: async (req, res) => {
+    try {
+      return await Service.countDocuments({});
     } catch (err) {
       let error = new Error(err);
       error.statusCode = 400;

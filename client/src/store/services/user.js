@@ -11,10 +11,14 @@ export const register = (obj) => {
 
 // admin services
 
-export const userList = (limit, page) => {
-  return request.get(apiUrl + `users/admin/user-list?page=${page}&limit=${limit}`)
+export const userList = (obj) => {
+  return request.post(apiUrl + `users/admin/user-list`, obj)
 }
 
 export const userById = (id) => {
   return request.get(apiUrl + `users/admin/user/${id}`)
+}
+
+export const updateUser = (id, obj) => {
+  return request.patch(apiUrl + `users/admin/user/${id}`, obj)
 }

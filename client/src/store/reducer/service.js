@@ -1,5 +1,6 @@
 const defaultState = {
   services: [],
+  totalPages: 0,
 }
 
 const serviceReducer = (state = defaultState, action) => {
@@ -8,6 +9,7 @@ const serviceReducer = (state = defaultState, action) => {
       return {
         ...state,
         services: action.payload.services,
+        totalPages: action.payload.totalPages,
       }
 
     default:

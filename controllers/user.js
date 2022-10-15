@@ -3,7 +3,13 @@ const bcrypt = require("bcryptjs");
 const userDao = require("../daos/user");
 const { SALTROUNDS, ROLEUSER } = require("../constants/constants");
 const paymentsDao = require("../daos/payments");
-const { createCustomer, createPaymentMethod, attachPaymentMethod, createPaymentIntent, confirmPaymentIntent } = require("../services/stripe");
+const {
+  createCustomer,
+  createPaymentMethod,
+  attachPaymentMethod,
+  createPaymentIntent,
+  confirmPaymentIntent,
+} = require("../services/stripe");
 
 module.exports = {
   login: async (req, res) => {
@@ -63,6 +69,7 @@ module.exports = {
       const { firstName, lastName, email, password, gender } = req.body;
       const hashedPassword = await bcrypt.hash(password, SALTROUNDS);
       await userDao.create({
+        name: `${firstName} ${lastName}`,
         firstName,
         lastName,
         email,
@@ -81,7 +88,11 @@ module.exports = {
       const user = await userDao.findByPk(userId);
       if (user) {
         const stripeuser = await createCustomer(user.email);
-        const paymentMethod = await createPaymentMethod(expiry, cardNumber, cvc);
+        const paymentMethod = await createPaymentMethod(
+          expiry,
+          cardNumber,
+          cvc
+        );
         await attachPaymentMethod(paymentMethod.id, stripeuser.id);
         await userDao.findOneAndUpdate(
           { _id: userId },
@@ -146,14 +157,31 @@ module.exports = {
       sendResponse(err, req, res, err);
     }
   },
-  getAllUsers: async (req, res) => {
-    try {
-      const page = parseInt(req.query.page ? req.query.page : 1);
-      const limit = parseInt(req.query.limit ? req.query.limit : 2);
-      const startIndex = (page - 1) * limit;
-      const endIndex = page * limit;
+  paginatedUsers: async (req, res) => {
+    const { isActive, email, name } = req.body;
 
-      const users = await userDao.find(startIndex, limit);
+    try {
+      const page = parseInt(req.body.page ? req.body.page : 1);
+      const limit = parseInt(req.body.limit ? req.body.limit : 2);
+      const startIndex = (page - 1) * limit;
+      let query = { role: ROLEUSER };
+      if (isActive) {
+        query = { ...query, isActive };
+      }
+      if (email) {
+        query = {
+          ...query,
+          email: { $regex: `^${email}$`, $options: "i" },
+        };
+      }
+      if (name) {
+        query = {
+          ...query,
+          name: { $regex: `^${name}$`, $options: "i" },
+        };
+      }
+      console.log(query, "query");
+      const users = await userDao.findWithPaginate(query, startIndex, limit);
       const totalUsers = await userDao.totalUsers();
 
       const totalPages = Math.ceil(totalUsers / limit);
@@ -171,6 +199,26 @@ module.exports = {
       sendResponse(null, req, res, {
         user,
       });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+  getAllUsers: async (req, res) => {
+    try {
+      const users = await userDao.find();
+      sendResponse(null, req, res, {
+        users,
+      });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+
+  updateUserById: async (req, res) => {
+    try {
+      await userDao.findOneAndUpdate({ _id: req.params.id }, { ...req.body });
+
+      sendResponse(null, req, res, { message: "User successfully updated" });
     } catch (err) {
       sendResponse(err, req, res, err);
     }

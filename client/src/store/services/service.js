@@ -8,10 +8,18 @@ const setHeader = {
   },
 }
 
-export const serviceList = () => {
-  return request.get(apiUrl + 'services', setHeader)
+export const serviceList = (obj) => {
+  return request.post(apiUrl + 'services/list', obj, setHeader)
 }
 
 export const addService = (obj) => {
   return request.post(apiUrl + 'services', obj, setHeader)
+}
+
+export const serviceById = (id) => {
+  return request.get(apiUrl + `services/${id}`, setHeader)
+}
+
+export const updateService = (id, obj) => {
+  return request.patch(apiUrl + `services/${id}`, obj, setHeader)
 }

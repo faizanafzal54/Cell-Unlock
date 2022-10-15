@@ -3,10 +3,13 @@ import CIcon from '@coreui/icons-react'
 import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
+  CForm,
   CCardBody,
-  CCardHeader,
+  CFormSelect,
+  CButton,
   CCol,
   CRow,
+  CFormInput,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -19,34 +22,102 @@ import {
 } from '@coreui/react'
 import { cilPencil, cilMagnifyingGlass } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { adminOrderList, pages } from 'src/store/selector/order'
-import { orderListAction, adminOrderListAction } from 'src/store/actions/order'
+import { adminOrderList, pages, adminUsers } from 'src/store/selector/order'
+import {
+  orderListAction,
+  adminOrderListAction,
+  adminUsersListAction,
+} from 'src/store/actions/order'
 import { Link } from 'react-router-dom'
 const OrderList = () => {
   const orders = useSelector(adminOrderList)
+  const users = useSelector(adminUsers)
   const totalPages = useSelector(pages)
   const dispatch = useDispatch()
+  const [statusFilter, setStatusFilter] = useState(null)
+  const [userFilter, setUserFilter] = useState(null)
+  const [orderFilter, setOrderFilter] = useState('')
   const [limit, setLimit] = useState(3)
   const [page, setPage] = useState(1)
 
   useEffect(() => {
-    dispatch(adminOrderListAction(limit, page))
+    dispatch(adminUsersListAction())
+  }, [])
+
+  useEffect(() => {
+    dispatch(
+      adminOrderListAction({
+        limit,
+        page,
+        status: statusFilter,
+        userId: userFilter,
+        orderNumber: orderFilter,
+      }),
+    )
   }, [orderListAction, page])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log({ statusFilter, userFilter, orderFilter })
+    dispatch(
+      adminOrderListAction({
+        limit,
+        page,
+        status: statusFilter,
+        userId: userFilter,
+        orderNumber: orderFilter,
+      }),
+    )
+  }
+
   return (
     <>
       <CRow>
+        <CForm onSubmit={handleSubmit}>
+          <CCol className="d-flex mb-3  border" xs={12}>
+            <div className="col-3 m-2">
+              <CFormInput
+                value={orderFilter}
+                type="text"
+                placeholder="Enter Order Number"
+                onChange={(e) => setOrderFilter(e.target.value)}
+              />
+            </div>
+            <div className="col-3 m-2">
+              <CFormSelect
+                aria-label="Default select example"
+                onChange={(e) => setUserFilter(e.target.value)}
+              >
+                <option value="">Select User</option>
+                {users?.map((user) => (
+                  <option key={user?._id} value={user?._id}>
+                    {user?.firstName}
+                  </option>
+                ))}
+              </CFormSelect>
+            </div>
+
+            <div className="col-3 m-2">
+              <CFormSelect
+                aria-label="Default select example"
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="">Select Status</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Completed">Completed</option>
+                <option value="Rejected">Rejected</option>
+              </CFormSelect>
+            </div>
+
+            <div className="col-2 pt-2">
+              <CButton type="submit" color="secondary" variant="outline">
+                Search
+              </CButton>
+            </div>
+          </CCol>
+        </CForm>
         <CCol xs={12}>
           <CCard className="mb-4">
-            {/* <CCardHeader className="text-end">
-              <Link to="/orders/edit/new">
-                <CTooltip content="Add New Order">
-                  <CIcon
-                    className="me-3 border border-secondary text-secondary rounded-circle"
-                    icon={cilPlus}
-                  />
-                </CTooltip>
-              </Link>
-            </CCardHeader> */}
             <CCardBody>
               <CTable>
                 <CTableHead>
@@ -56,7 +127,6 @@ const OrderList = () => {
                     <CTableHeaderCell scope="col">Customer Name</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Start Date</CTableHeaderCell>
                     <CTableHeaderCell scope="col">End Date</CTableHeaderCell>
-                    {/* <CTableHeaderCell scope="col">IMEI Numbers</CTableHeaderCell> */}
                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                   </CTableRow>
@@ -65,7 +135,6 @@ const OrderList = () => {
                   {orders?.map((order) => {
                     return (
                       <CTableRow key={order._id}>
-                        {/* <CTableHeaderCell scope="row">1</CTableHeaderCell> */}
                         <CTableDataCell>{order.orderNumber}</CTableDataCell>
                         <CTableDataCell>{order?.service?.name}</CTableDataCell>
                         <CTableDataCell>{order?.userId?.firstName}</CTableDataCell>
@@ -75,15 +144,7 @@ const OrderList = () => {
                         <CTableDataCell>
                           {new Date(order.toDate).toISOString().split('T')[0]}
                         </CTableDataCell>
-                        {/* {
-                          <CTableDataCell>
-                            <ul>
-                              {order.imeiNumbers.map((number, index) => (
-                                <li key={index}>{number}</li>
-                              ))}
-                            </ul>
-                          </CTableDataCell>
-                        } */}
+
                         <CTableDataCell>
                           {order.status === 'Confirmed' ? (
                             <CBadge className="pt-2 pb-2" color="warning">
@@ -104,7 +165,7 @@ const OrderList = () => {
                             <CIcon className="text-secondary " icon={cilPencil} />
                           </Link>
                           &nbsp;&nbsp;
-                          <Link to={`/orders/${order._id}`}>
+                          <Link to={`/admin/orders/${order._id}`}>
                             <CIcon className="text-secondary " icon={cilMagnifyingGlass} />
                           </Link>
                         </CTableDataCell>
