@@ -1,4 +1,5 @@
 import React from 'react'
+import UserView from './views/admin/users/UserView'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const OrderList = React.lazy(() => import('./views/order/OrderList'))
@@ -64,7 +65,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 export const adminRoutes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/admin/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/admin/orders/', name: 'Add Order', element: AminOrderList },
 
   { path: '/admin/orders/:id', name: 'Orders View', element: ViewOrder },
@@ -74,6 +75,7 @@ export const adminRoutes = [
   { path: '/admin/services/:mode', name: 'Add Service', element: AddService },
   { path: '/admin/users', name: 'Users', element: UserList },
   { path: '/admin/users/edit/:id', name: 'Edit User', element: UserEdit },
+  { path: '/admin/users/view/:id', name: 'View User', element: UserView },
 ]
 
 export const routes = [

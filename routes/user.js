@@ -1,15 +1,5 @@
 const router = require("express").Router();
-const {
-  login,
-  regiser,
-  createStripeCustomer,
-  purchaseCredits,
-  getUserCredits,
-  getAllUsers,
-  findUser,
-  paginatedUsers,
-  updateUserById,
-} = require("../controllers/user");
+const { login, regiser, createStripeCustomer, purchaseCredits, getUserCredits, getAllUsers, findUser, paginatedUsers, updateUserById, getStats } = require("../controllers/user");
 const { verifyToken } = require("../middleware/authValidator");
 
 router.get("/", (req, res) => {
@@ -26,4 +16,7 @@ router.post("/admin/user-list", paginatedUsers);
 router.get("/admin/users", getAllUsers);
 router.get("/admin/user/:id", findUser);
 router.patch("/admin/user/:id", updateUserById);
+
+router.get("/general/stats", getStats);
+
 module.exports = router;

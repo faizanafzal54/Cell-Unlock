@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import CIcon from '@coreui/icons-react'
 import 'react-toastify/dist/ReactToastify.css'
-import { CCard, CCardBody, CCardHeader, CCol, CRow, CContainer } from '@coreui/react'
+import {
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CRow,
+  CContainer,
+  CTable,
+  CTableHead,
+  CTableRow,
+  CTableHeaderCell,
+  CTableBody,
+  CTableDataCell,
+} from '@coreui/react'
 import { cilPencil, cilPlus } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { order } from 'src/store/selector/order'
@@ -111,6 +124,43 @@ const ViewOrder = () => {
                     </div>
                   </CRow>
                 </CContainer>
+              </CCardBody>
+            </CCard>
+          </CCol>
+        </CRow>
+        <CRow>
+          <CCol>
+            <CCard className="mb-4">
+              <CCardHeader className="">
+                <strong>History </strong>
+              </CCardHeader>
+              <CCardBody>
+                <CTable>
+                  <CTableHead>
+                    <CTableRow>
+                      <CTableHeaderCell scope="col">Sr#</CTableHeaderCell>
+                      <CTableHeaderCell scope="col">User name</CTableHeaderCell>
+                      <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                      <CTableHeaderCell scope="col">Date</CTableHeaderCell>
+                    </CTableRow>
+                  </CTableHead>
+                  <CTableBody>
+                    {order?.history?.map((hist, index) => {
+                      return (
+                        <CTableRow key={hist._id}>
+                          <CTableDataCell>{index + 1}</CTableDataCell>
+                          <CTableDataCell>
+                            {hist?.userId?.firstName + ' ' + hist?.userId?.lastName}
+                          </CTableDataCell>
+                          <CTableDataCell>{hist?.action}</CTableDataCell>
+                          <CTableDataCell>
+                            {new Date(hist?.updatedAt).toISOString().split('T')[0]}
+                          </CTableDataCell>
+                        </CTableRow>
+                      )
+                    })}
+                  </CTableBody>
+                </CTable>
               </CCardBody>
             </CCard>
           </CCol>

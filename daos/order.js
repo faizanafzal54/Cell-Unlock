@@ -52,6 +52,11 @@ module.exports = {
         .populate({
           path: "userId",
           select: "firstName lastName",
+        })
+        .populate({
+          path: "history.userId",
+          model: "User",
+          select: "firstName lastName",
         });
       return order;
     } catch (err) {
