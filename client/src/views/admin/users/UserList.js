@@ -118,9 +118,12 @@ const UserList = () => {
                         <CTableDataCell>
                           {user?.isStripeAccountActive ? 'Active' : 'Disabled'}
                         </CTableDataCell>
-                        <CTableDataCell className="text-center ">
+                        <CTableDataCell>
                           <Link to={`/admin/users/edit/${user._id}`}>
                             <CIcon className="text-secondary " icon={cilPencil} />
+                          </Link>
+                          <Link className="ms-2" to={`/admin/users/view/${user._id}`}>
+                            <CIcon className="text-secondary " icon={cilMagnifyingGlass} />
                           </Link>
                         </CTableDataCell>
                       </CTableRow>

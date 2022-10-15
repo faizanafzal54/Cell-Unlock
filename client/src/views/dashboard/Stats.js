@@ -30,14 +30,6 @@ const Stats = () => {
       <CCol sm={6} lg={3}>
         <CWidgetStatsA
           className="mb-4 pb-3"
-          color="primary"
-          value={<>{0}</>}
-          title="Total Receipt"
-        />
-      </CCol>
-      <CCol sm={6} lg={3}>
-        <CWidgetStatsA
-          className="mb-4 pb-3"
           color="danger"
           value={<>{0}</>}
           title="Credits in Progress"

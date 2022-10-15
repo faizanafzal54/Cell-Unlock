@@ -3,13 +3,7 @@ const bcrypt = require("bcryptjs");
 const userDao = require("../daos/user");
 const { SALTROUNDS, ROLEUSER } = require("../constants/constants");
 const paymentsDao = require("../daos/payments");
-const {
-  createCustomer,
-  createPaymentMethod,
-  attachPaymentMethod,
-  createPaymentIntent,
-  confirmPaymentIntent,
-} = require("../services/stripe");
+const { createCustomer, createPaymentMethod, attachPaymentMethod, createPaymentIntent, confirmPaymentIntent } = require("../services/stripe");
 
 module.exports = {
   login: async (req, res) => {
@@ -88,11 +82,7 @@ module.exports = {
       const user = await userDao.findByPk(userId);
       if (user) {
         const stripeuser = await createCustomer(user.email);
-        const paymentMethod = await createPaymentMethod(
-          expiry,
-          cardNumber,
-          cvc
-        );
+        const paymentMethod = await createPaymentMethod(expiry, cardNumber, cvc);
         await attachPaymentMethod(paymentMethod.id, stripeuser.id);
         await userDao.findOneAndUpdate(
           { _id: userId },
@@ -219,6 +209,13 @@ module.exports = {
       await userDao.findOneAndUpdate({ _id: req.params.id }, { ...req.body });
 
       sendResponse(null, req, res, { message: "User successfully updated" });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+  //general
+  getStats: async (req, res) => {
+    try {
     } catch (err) {
       sendResponse(err, req, res, err);
     }

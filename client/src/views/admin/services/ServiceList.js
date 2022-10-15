@@ -146,7 +146,7 @@ const ServiceList = () => {
                           {service?.isDeleted === false ? 'Enabled' : 'Disabled'}
                         </CTableDataCell>
 
-                        <CTableDataCell className="text-center">
+                        <CTableDataCell>
                           <Link to={`/admin/services/${service._id}`}>
                             <CIcon className="text-secondary" icon={cilPencil} />
                           </Link>
