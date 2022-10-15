@@ -70,7 +70,7 @@ export const updateOrderAction = (id, obj, callback) => async (dispatch) => {
 export const serviceListAction = () => async (dispatch) => {
   try {
     const res = await serviceList()
-    if (res.status === 201) {
+    if (res.status === 200) {
       dispatch({
         type: 'ServiceList',
         payload: {

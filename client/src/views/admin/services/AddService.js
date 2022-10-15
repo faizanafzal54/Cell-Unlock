@@ -327,6 +327,7 @@ const AddService = () => {
                               <CFormInput
                                 type="text"
                                 value={name}
+                                required
                                 placeholder="Enter Service Name"
                                 onChange={(e) => setName(e.target.value)}
                               />
@@ -336,6 +337,7 @@ const AddService = () => {
                               <CFormInput
                                 type="number"
                                 value={price}
+                                required
                                 placeholder="Enter Price"
                                 onChange={(e) => setPrice(e.target.value)}
                               />
@@ -345,6 +347,7 @@ const AddService = () => {
                               <CFormInput
                                 type="number"
                                 value={costPrice}
+                                required
                                 placeholder="Enter Cost Price"
                                 onChange={(e) => setCostPrice(e.target.value)}
                               />

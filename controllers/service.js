@@ -13,7 +13,18 @@ module.exports = {
       sendResponse(err, req, res, err);
     }
   },
-  getAll: async (req, res) => {
+
+  getAllServices: async (req, res) => {
+    try {
+      const services = await serviceDao.find();
+
+      sendResponse(null, req, res, { services });
+    } catch (err) {
+      sendResponse(err, req, res, err);
+    }
+  },
+
+  serivicesWithFilters: async (req, res) => {
     const { serviceType, name, isDeleted } = req.body;
     try {
       const page = parseInt(req.body.page ? req.body.page : 1);
@@ -37,7 +48,11 @@ module.exports = {
         };
       }
       console.log(query, "query");
-      const services = await serviceDao.find(query, startIndex, limit);
+      const services = await serviceDao.findWithPagination(
+        query,
+        startIndex,
+        limit
+      );
       const totalServices = await serviceDao.totalServices();
 
       const totalPages = Math.ceil(totalServices / limit);

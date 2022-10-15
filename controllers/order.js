@@ -79,8 +79,8 @@ module.exports = {
 
   updateOrder: async (req, res) => {
     try {
-      const user = userDao.findByPk(req.body.userId);
-      console.log(user.role, "role:::::::::::");
+      const user = await userDao.findByPk(req.body.userId);
+
       const updateQuery = {
         ...req.body,
         $push: {

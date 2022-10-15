@@ -180,6 +180,31 @@ function UserView() {
             </CCard>
           </CCol>
         </CRow>
+        <CRow>
+          <CCol xs={12}>
+            <CCard className="mb-4">
+              <CCardHeader className="">
+                <strong>Sales Report - {user?._id}</strong>
+              </CCardHeader>
+              <CCardBody>
+                <CContainer>
+                  <CRow>
+                    <CCol className="order-detail-tag" xs={6}>
+                      <div className="d-flex">
+                        <p className="fw-bold ">Order Placed:</p>
+                        <p className="ps-2 ">{orders?.length}</p>
+                      </div>
+                      <div className="d-flex">
+                        <p className="fw-bold ">Total Price:</p>
+                        {/* <p className=" ps-2">{user?.lastName}</p> */}
+                      </div>
+                    </CCol>
+                  </CRow>
+                </CContainer>
+              </CCardBody>
+            </CCard>
+          </CCol>
+        </CRow>
       </CContainer>
     </>
   )

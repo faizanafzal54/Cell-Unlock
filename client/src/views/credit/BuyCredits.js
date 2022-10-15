@@ -56,7 +56,7 @@ const BuyCredits = () => {
                   <CRow className="order-detail-tag">
                     <div className="d-flex">
                       <p className=" ">Total credits you own:</p>
-                      <strong className="ps-2 ">{Credits}</strong>
+                      <strong className="ps-2 ">{Credits} $</strong>
                     </div>
                     <CCol className="order-detail-tag  " xs={6}>
                       <CForm onSubmit={submitHandler}>

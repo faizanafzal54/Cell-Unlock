@@ -21,7 +21,7 @@ import {
   CPagination,
   CPaginationItem,
 } from '@coreui/react'
-import { cilPencil, cilPlus, cilMagnifyingGlass } from '@coreui/icons'
+import { cilPencil, cilPlus, cilMagnifyingGlass, cilCheckCircle, cilBan } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { serviceList, pages } from 'src/store/selector/service'
 import { serviceListAction } from 'src/store/actions/service'
@@ -142,8 +142,13 @@ const ServiceList = () => {
 
                         {/* <CTableDataCell>{service?.orderVerfiyTime}</CTableDataCell> */}
                         {/* <CTableDataCell>{service?.orderCancelTime}</CTableDataCell> */}
+
                         <CTableDataCell>
-                          {service?.isDeleted === false ? 'Enabled' : 'Disabled'}
+                          {service?.isDeleted === false ? (
+                            <CIcon className="text-secondary ms-2" icon={cilCheckCircle} />
+                          ) : (
+                            <CIcon className="text-secondary ms-2" icon={cilBan} />
+                          )}
                         </CTableDataCell>
 
                         <CTableDataCell>

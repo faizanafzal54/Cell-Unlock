@@ -1,9 +1,16 @@
 const { sendResponse, generateToken } = require("../utils/utils");
 const bcrypt = require("bcryptjs");
 const userDao = require("../daos/user");
+const orderDao = require("../daos/order");
 const { SALTROUNDS, ROLEUSER } = require("../constants/constants");
 const paymentsDao = require("../daos/payments");
-const { createCustomer, createPaymentMethod, attachPaymentMethod, createPaymentIntent, confirmPaymentIntent } = require("../services/stripe");
+const {
+  createCustomer,
+  createPaymentMethod,
+  attachPaymentMethod,
+  createPaymentIntent,
+  confirmPaymentIntent,
+} = require("../services/stripe");
 
 module.exports = {
   login: async (req, res) => {
@@ -82,7 +89,11 @@ module.exports = {
       const user = await userDao.findByPk(userId);
       if (user) {
         const stripeuser = await createCustomer(user.email);
-        const paymentMethod = await createPaymentMethod(expiry, cardNumber, cvc);
+        const paymentMethod = await createPaymentMethod(
+          expiry,
+          cardNumber,
+          cvc
+        );
         await attachPaymentMethod(paymentMethod.id, stripeuser.id);
         await userDao.findOneAndUpdate(
           { _id: userId },
@@ -216,6 +227,22 @@ module.exports = {
   //general
   getStats: async (req, res) => {
     try {
+      //admin
+      if (true) {
+        //mongo aggregate order status confimed
+        orderDao.aggregate({ status: "Confirmed" });
+
+        //mongo aggregate order status completed
+        orderDao.aggregate({ status: "Completed" });
+
+        //mongo aggregegate payment  credits bought
+      }
+      // general user
+      else {
+        //mongo aggregate order status confimed
+        //mongo aggregate order status completed
+        // user own credits
+      }
     } catch (err) {
       sendResponse(err, req, res, err);
     }

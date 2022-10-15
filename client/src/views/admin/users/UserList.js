@@ -21,7 +21,7 @@ import {
   CPagination,
   CPaginationItem,
 } from '@coreui/react'
-import { cilPencil, cilPlus, cilMagnifyingGlass } from '@coreui/icons'
+import { cilPencil, cilPlus, cilMagnifyingGlass, cilCheckCircle, cilBan } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { userList, pages } from 'src/store/selector/user'
 import { userListAction } from 'src/store/actions/user'
@@ -114,9 +114,20 @@ const UserList = () => {
                         <CTableDataCell>{user?.email}</CTableDataCell>
                         <CTableDataCell>{user?.gender}</CTableDataCell>
                         <CTableDataCell>{user?.credits}</CTableDataCell>
-                        <CTableDataCell>{user?.isActive ? 'Active' : 'InActive'}</CTableDataCell>
+
                         <CTableDataCell>
-                          {user?.isStripeAccountActive ? 'Active' : 'Disabled'}
+                          {user?.isActive ? (
+                            <CIcon className="text-secondary ms-2" icon={cilCheckCircle} />
+                          ) : (
+                            <CIcon className="text-secondary ms-2" icon={cilBan} />
+                          )}
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          {user?.isStripeAccountActive ? (
+                            <CIcon className="text-secondary ms-2" icon={cilCheckCircle} />
+                          ) : (
+                            <CIcon className="text-secondary ms-4" icon={cilBan} />
+                          )}
                         </CTableDataCell>
                         <CTableDataCell>
                           <Link to={`/admin/users/edit/${user._id}`}>

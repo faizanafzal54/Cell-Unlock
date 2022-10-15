@@ -1,7 +1,18 @@
 const Service = require("../models/ServiceModel");
 
 module.exports = {
-  find: async (query, startIndex, endIndex) => {
+  find: async () => {
+    try {
+      const response = await Service.find({});
+      return response;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
+
+  findWithPagination: async (query, startIndex, endIndex) => {
     try {
       const response = await Service.find(query)
         .skip(startIndex)

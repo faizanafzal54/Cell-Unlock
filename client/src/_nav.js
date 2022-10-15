@@ -11,8 +11,10 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
+  cilCog,
   cilPeople,
-  cilGrain,
+  cilCart,
+  cilDollar,
   cilLocationPin,
   cilSettings,
   cilClipboard,
@@ -37,14 +39,14 @@ const _nav = [
     component: CNavItem,
     name: 'Orders',
     to: '/orders',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilCart} customClassName="nav-icon" />,
     access: 'USER',
   },
   {
     component: CNavGroup,
     name: 'Credits',
     to: '/credits',
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilDollar} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -74,7 +76,7 @@ const _nav = [
     component: CNavItem,
     name: 'Orders',
     to: 'admin/orders',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilCart} customClassName="nav-icon" />,
     access: 'ADMIN',
   },
 
@@ -82,7 +84,7 @@ const _nav = [
     component: CNavItem,
     name: 'Services',
     to: 'admin/services',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilCog} customClassName="nav-icon" />,
     access: 'ADMIN',
   },
 

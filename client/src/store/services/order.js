@@ -16,7 +16,7 @@ export const addOrder = (obj) => {
 }
 
 export const serviceList = () => {
-  return request.post(apiUrl + 'services', setHeader)
+  return request.get(apiUrl + 'services/list', setHeader)
 }
 
 export const orderById = (id) => {
