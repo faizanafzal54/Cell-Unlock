@@ -1,5 +1,7 @@
 const { sendResponse, generateRandomString } = require("../utils/utils");
 const orderDao = require("../daos/order");
+const userDao = require("../daos/user");
+const serviceDao = require("../daos/service");
 
 module.exports = {
   getOrders: async (req, res) => {
@@ -26,6 +28,18 @@ module.exports = {
         fieldType,
       } = req.body;
       // here we will check the user own credits and service credits
+
+      const user = await userDao.findByPk(userId);
+      const selectedService = await serviceDao.findByPk(service);
+      const userType = selectedService.credits[user?.userType ?? "USER"];
+      if (user.credits < userType) {
+        let err = new Error(
+          "You don't have enough credits to place this order"
+        );
+        err.statusCode = 400;
+        return sendResponse(err, req, res, err);
+      }
+
       const str = generateRandomString(3);
       const orderCount = await orderDao.orderCount();
       await orderDao.create({
@@ -65,15 +79,25 @@ module.exports = {
 
   updateOrder: async (req, res) => {
     try {
-      // req.body.history = [
-      //   {
-      //     userId,
-      //     action: "Order Updated",
-      //     updatedAt: new Date(),
-      //   },
-      // ],
-      await orderDao.findOneAndUpdate({ _id: req.params.id }, { ...req.body });
-      // console.log(order);
+      const user = userDao.findByPk(req.body.userId);
+      console.log(user.role, "role:::::::::::");
+      const updateQuery = {
+        ...req.body,
+        $push: {
+          history: {
+            userId: req.body.userId,
+            action:
+              user.role === "ADMIN"
+                ? "Order Updated By Admin"
+                : "Order Updated",
+            updatedAt: new Date(),
+          },
+        },
+      };
+      await orderDao.findOneAndUpdate(
+        { _id: req.params.id },
+        { ...updateQuery }
+      );
       sendResponse(null, req, res, { message: "Order successfully updated" });
     } catch (err) {
       sendResponse(err, req, res, err);
