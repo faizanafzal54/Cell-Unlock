@@ -13,9 +13,15 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
+import { getStatsAction } from 'src/store/actions/user'
 
 const Stats = () => {
   const dispatch = useDispatch()
+  const stats = useSelector((state) => state.user.stats)
+
+  useEffect(() => {
+    dispatch(getStatsAction())
+  }, [getStatsAction])
 
   return (
     <CRow>
@@ -23,7 +29,7 @@ const Stats = () => {
         <CWidgetStatsA
           className="mb-4 pb-3"
           color="success"
-          value={<>{0}</>}
+          value={<>${stats?.availableBalance}</>}
           title="Available Balance"
         />
       </CCol>
@@ -31,7 +37,7 @@ const Stats = () => {
         <CWidgetStatsA
           className="mb-4 pb-3"
           color="primary"
-          value={<>{0}</>}
+          value={<>${stats?.creditsInProgress}</>}
           title="Credits in Progress"
         />
       </CCol>
@@ -39,7 +45,7 @@ const Stats = () => {
         <CWidgetStatsA
           className="mb-4 pb-3"
           color="secondary"
-          value={<>{0}</>}
+          value={<>${stats?.creditUsed}</>}
           title="Credit Used"
         />
       </CCol>

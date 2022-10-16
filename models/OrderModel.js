@@ -53,7 +53,10 @@ const orderSchema = new Schema({
       },
     },
   ],
-
+  creditsUsed: {
+    type: Number,
+    default: 0,
+  },
   code: { type: String, trim: true },
   description: { type: String, trim: true },
 });

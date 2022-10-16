@@ -250,7 +250,7 @@ const AddOrder = () => {
                           variant="outline"
                           className="text-end"
                         >
-                          {params.mode !== 'new' ? 'Save' : 'Add Order'}
+                          {params.mode !== 'new' ? 'Save' : 'Place Order'}
                         </CButton>
                       </div>
                     </CCol>

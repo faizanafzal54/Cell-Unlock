@@ -419,7 +419,7 @@ const AddService = () => {
                               <CFormLabel htmlFor="exampleFormControlInput1">Features</CFormLabel>
 
                               <CFormCheck
-                                id="flexCheckChecked"
+                                id="feature1"
                                 label="Refund available if code is not found"
                                 value="Refund available if code is not found"
                                 checked={
@@ -438,7 +438,7 @@ const AddService = () => {
                                 }
                               />
                               <CFormCheck
-                                id="flexCheckChecked"
+                                id="feature2"
                                 label="Service availble 24x7"
                                 value="Service availble 24x7"
                                 checked={
@@ -455,7 +455,7 @@ const AddService = () => {
                                 }
                               />
                               <CFormCheck
-                                id="flexCheckChecked"
+                                id="feature3"
                                 label="Unlock guranteed"
                                 value="Unlock guranteed"
                                 checked={
@@ -472,7 +472,7 @@ const AddService = () => {
                                 }
                               />
                               <CFormCheck
-                                id="flexCheckChecked"
+                                id="feature4"
                                 label="No refund for bad requests"
                                 value="No refund for bad requests"
                                 checked={
@@ -489,7 +489,7 @@ const AddService = () => {
                                 }
                               />
                               <CFormCheck
-                                id="flexCheckChecked"
+                                id="feature5"
                                 label="Working on business days only"
                                 value="Working on business days only"
                                 checked={

@@ -98,4 +98,14 @@ module.exports = {
       throw error;
     }
   },
+  aggregate: async (query) => {
+    try {
+      const response = await Order.aggregate(query);
+      return response;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
 };

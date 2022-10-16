@@ -10,6 +10,11 @@ const defaultState = {
   token: '',
   users: [],
   totalPages: 0,
+  stats: {
+    availableBalance: 0,
+    creditUsed: 0,
+    creditsInProgress: 0,
+  },
 }
 
 const userReducer = (state = defaultState, action) => {
@@ -49,6 +54,11 @@ const userReducer = (state = defaultState, action) => {
         ...state,
         token: action.payload.token,
         refreshToken: action.payload.refreshToken,
+      }
+    case 'SetStats':
+      return {
+        ...state,
+        stats: action.payload.stats,
       }
     default:
       return state

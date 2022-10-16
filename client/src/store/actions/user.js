@@ -1,4 +1,4 @@
-import { login, register, userList, userById, updateUser } from 'src/store/services/user'
+import { login, register, userList, userById, updateUser, getStats } from 'src/store/services/user'
 import { toastify } from '../services/toastify'
 
 export const loginAction = (obj, callback) => async (dispatch) => {
@@ -80,6 +80,22 @@ export const updateUserAction = (id, obj, callback) => async (dispatch) => {
     if (res.status === 200) {
       toastify('success', res?.data?.data.message)
       callback()
+    }
+  } catch (err) {
+    toastify('error', err?.response?.data?.err.message)
+  }
+}
+
+export const getStatsAction = () => async (dispatch) => {
+  try {
+    const res = await getStats()
+    if (res.status) {
+      dispatch({
+        type: 'SetStats',
+        payload: {
+          stats: res.data.data,
+        },
+      })
     }
   } catch (err) {
     toastify('error', err?.response?.data?.err.message)

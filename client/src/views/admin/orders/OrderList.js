@@ -160,7 +160,7 @@ const OrderList = () => {
                             </CBadge>
                           )}
                         </CTableDataCell>
-                        <CTableDataCell className="text-center ">
+                        <CTableDataCell>
                           <Link to={`/admin/orders/edit/${order._id}`}>
                             <CIcon className="text-secondary " icon={cilPencil} />
                           </Link>
