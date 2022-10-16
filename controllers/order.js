@@ -17,14 +17,25 @@ module.exports = {
 
   createOrder: async (req, res) => {
     try {
-      const { service, status, fromDate, toDate, userId, imeiNumbers, serverFields, fieldType } = req.body;
+      const {
+        service,
+        status,
+        fromDate,
+        toDate,
+        userId,
+        imeiNumbers,
+        serverFields,
+        fieldType,
+      } = req.body;
       // here we will check the user own credits and service credits
 
       const user = await userDao.findByPk(userId);
       const selectedService = await serviceDao.findByPk(service);
-      const serviceCredits = selectedService.credits[user?.userType ?? "USER"]; // credits based on user type
-      if (user.credits < serviceCredits) {
-        let err = new Error("You don't have enough credits to place this order");
+      const serviceCredits = selectedService?.credits[user?.userType ?? "USER"]; // credits based on user type
+      if (user?.credits < serviceCredits) {
+        let err = new Error(
+          "You don't have enough credits to place this order"
+        );
         err.statusCode = 400;
         return sendResponse(err, req, res, err);
       }
@@ -49,6 +60,14 @@ module.exports = {
           },
         ],
       });
+      const creditDeduction = Number(user.credits - serviceCredits);
+      const newUser = await userDao.findOneAndUpdate(
+        { _id: user._id },
+        {
+          credits: creditDeduction,
+        }
+      );
+
       sendResponse(null, req, res, { message: "Order successfully created" });
     } catch (err) {
       sendResponse(err, req, res, err);
@@ -75,12 +94,18 @@ module.exports = {
         $push: {
           history: {
             userId: req.body.userId,
-            action: user.role === "ADMIN" ? "Order Updated By Admin" : "Order Updated",
+            action:
+              user.role === "ADMIN"
+                ? "Order Updated By Admin"
+                : "Order Updated",
             updatedAt: new Date(),
           },
         },
       };
-      await orderDao.findOneAndUpdate({ _id: req.params.id }, { ...updateQuery });
+      await orderDao.findOneAndUpdate(
+        { _id: req.params.id },
+        { ...updateQuery }
+      );
       sendResponse(null, req, res, { message: "Order successfully updated" });
     } catch (err) {
       sendResponse(err, req, res, err);
@@ -116,7 +141,11 @@ module.exports = {
         };
       }
       console.log(query, "query");
-      const orders = await orderDao.getPaginatedOrders(query, startIndex, limit);
+      const orders = await orderDao.getPaginatedOrders(
+        query,
+        startIndex,
+        limit
+      );
       const orderCount = await orderDao.orderCount();
 
       const totalPages = orderCount / limit;

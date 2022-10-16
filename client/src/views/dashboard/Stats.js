@@ -13,14 +13,16 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
+import { user } from 'src/store/selector/user'
 import { getStatsAction } from 'src/store/actions/user'
 
 const Stats = () => {
   const dispatch = useDispatch()
+  const userDetail = useSelector(user)
   const stats = useSelector((state) => state.user.stats)
 
   useEffect(() => {
-    dispatch(getStatsAction())
+    dispatch(getStatsAction(userDetail._id))
   }, [getStatsAction])
 
   return (

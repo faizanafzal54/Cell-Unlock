@@ -23,6 +23,6 @@ export const updateUser = (id, obj) => {
   return request.patch(apiUrl + `users/admin/user/${id}`, obj)
 }
 
-export const getStats = (id, obj) => {
-  return request.get(apiUrl + `users/general/stats`)
+export const getStats = (id) => {
+  return request.get(apiUrl + `users/general/stats/${id}`)
 }

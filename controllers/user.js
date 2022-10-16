@@ -4,7 +4,14 @@ const userDao = require("../daos/user");
 const orderDao = require("../daos/order");
 const { SALTROUNDS, ROLEUSER } = require("../constants/constants");
 const paymentsDao = require("../daos/payments");
-const { createCustomer, createPaymentMethod, attachPaymentMethod, createPaymentIntent, confirmPaymentIntent } = require("../services/stripe");
+const {
+  createCustomer,
+  createPaymentMethod,
+  attachPaymentMethod,
+  createPaymentIntent,
+  confirmPaymentIntent,
+} = require("../services/stripe");
+const { default: mongoose } = require("mongoose");
 
 module.exports = {
   login: async (req, res) => {
@@ -83,7 +90,11 @@ module.exports = {
       const user = await userDao.findByPk(userId);
       if (user) {
         const stripeuser = await createCustomer(user.email);
-        const paymentMethod = await createPaymentMethod(expiry, cardNumber, cvc);
+        const paymentMethod = await createPaymentMethod(
+          expiry,
+          cardNumber,
+          cvc
+        );
         await attachPaymentMethod(paymentMethod.id, stripeuser.id);
         await userDao.findOneAndUpdate(
           { _id: userId },
@@ -217,8 +228,10 @@ module.exports = {
   //general
   getStats: async (req, res) => {
     try {
+      const user = await userDao.findByPk(req.params.id);
       //admin
-      if (true) {
+      if (user.role === "ADMIN") {
+        console.log("if:::::::::");
         //mongo aggregate order status confimed
         const creditsInProgress = await orderDao.aggregate([
           {
@@ -248,16 +261,47 @@ module.exports = {
           { $group: { _id: null, price: { $sum: "$creditsBought" } } },
         ]);
         sendResponse(null, req, res, {
-          creditsInProgress: creditsInProgress[0] ? creditsInProgress[0].price : 0,
+          creditsInProgress: creditsInProgress[0]
+            ? creditsInProgress[0].price
+            : 0,
           creditUsed: creditUsed[0] ? creditUsed[0].price : 0,
           availableBalance: availableBalance[0] ? availableBalance[0].price : 0,
         });
-      }
-      // general user
-      else {
+      } else {
+        console.log("else:::::::::", req.params.id);
+
         //mongo aggregate order status confimed
+        const creditsInProgress = await orderDao.aggregate([
+          {
+            $match: {
+              status: "Confirmed",
+              userId: mongoose.Types.ObjectId(req.params.id),
+            },
+          },
+          { $group: { _id: null, price: { $sum: "$creditsUsed" } } },
+        ]);
+
+        console.log(creditsInProgress);
+
         //mongo aggregate order status completed
+        const creditUsed = await orderDao.aggregate([
+          {
+            $match: {
+              status: "Completed",
+              userId: mongoose.Types.ObjectId(req.params.id),
+            },
+          },
+          { $group: { _id: null, price: { $sum: "$creditsUsed" } } },
+        ]);
         // user own credits
+        const availableBalance = user?.credits;
+        sendResponse(null, req, res, {
+          creditsInProgress: creditsInProgress[0]
+            ? creditsInProgress[0].price
+            : 0,
+          creditUsed: creditUsed[0] ? creditUsed[0].price : 0,
+          availableBalance: availableBalance ? availableBalance : 0,
+        });
       }
     } catch (err) {
       sendResponse(err, req, res, err);

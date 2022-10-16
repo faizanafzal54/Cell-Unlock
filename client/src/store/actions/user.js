@@ -86,9 +86,9 @@ export const updateUserAction = (id, obj, callback) => async (dispatch) => {
   }
 }
 
-export const getStatsAction = () => async (dispatch) => {
+export const getStatsAction = (id) => async (dispatch) => {
   try {
-    const res = await getStats()
+    const res = await getStats(id)
     if (res.status) {
       dispatch({
         type: 'SetStats',
