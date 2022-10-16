@@ -38,6 +38,7 @@ const OrderComplete = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const params = useParams()
+  const userId = useSelector((state) => state.user?.user?._id)
 
   useEffect(async () => {
     const data = await dispatch(orderByIdAction(params.id))
@@ -52,7 +53,11 @@ const OrderComplete = () => {
     if (code === '' || description === '') return toastify('error', 'Please fill all fields')
 
     dispatch(
-      adminUpdateOrderAction(params.id, { code, description, status: 'Completed' }, callback),
+      adminUpdateOrderAction(
+        params.id,
+        { code, description, status: 'Completed', userId },
+        callback,
+      ),
     )
   }
   const callback = () => {

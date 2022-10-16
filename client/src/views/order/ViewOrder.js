@@ -30,6 +30,17 @@ const ViewOrder = () => {
     setOrder(order)
     console.log(order)
   }, [orderByIdAction])
+
+  const getClass = (_status) => {
+    if (_status === 'Confirmed') {
+      return 'text-primary'
+    } else if (_status === 'Completed') {
+      return 'text-success'
+    } else if (_status === 'Rejected') {
+      return 'text-danger'
+    }
+  }
+
   return (
     <>
       <CContainer className="">
@@ -92,7 +103,9 @@ const ViewOrder = () => {
                     <CCol className="order-detail-tag" xs={6}>
                       <div className="d-flex">
                         <p className="fw-bold ">Status:</p>
-                        <p className=" ps-2">{order?.status}</p>
+                        <p className={`ps-2 ${getClass(order?.status)}`}>
+                          <b>{order?.status}</b>
+                        </p>
                       </div>
 
                       <div className="d-flex">

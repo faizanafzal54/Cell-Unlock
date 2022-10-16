@@ -86,7 +86,7 @@ const OrderList = () => {
                         } */}
                         <CTableDataCell>
                           {order.status === 'Confirmed' ? (
-                            <CBadge className="pt-2 pb-2" color="warning">
+                            <CBadge className="pt-2 pb-2" color="primary">
                               {order.status}
                             </CBadge>
                           ) : order.status === 'Completed' ? (

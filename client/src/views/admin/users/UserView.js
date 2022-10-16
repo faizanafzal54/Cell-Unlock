@@ -199,7 +199,7 @@ function UserView() {
                         <p className="ps-2 ">{orders?.length}</p>
                       </div>
                       <div className="d-flex">
-                        <p className="fw-bold ">Total Price:</p>
+                        <p className="fw-bold ">Total Expenditures:</p>
                         <p className=" ps-2">{getTotalCreditsUsed()}</p>
                       </div>
                     </CCol>
