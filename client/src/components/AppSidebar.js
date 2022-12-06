@@ -30,6 +30,11 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand style={{ backgroundColor: '#341E9D' }} className="d-none d-md-flex" to="/">
+        <img
+          src={require('../assets/Cell Unloking Logo.jpg')}
+          height={'61px'}
+          style={{ marginTop: '-3px' }}
+        />
         {/* <CIcon className="sidebar-brand-full" icon={logo} height={35} /> */}
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
       </CSidebarBrand>

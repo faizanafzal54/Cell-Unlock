@@ -29,10 +29,9 @@ import { logoutAction } from 'src/store/actions/user'
 import { useNavigate } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
-  const adminName = useSelector(userName);
+  const adminName = useSelector(userName)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
 
   const handleLogout = () => {
     dispatch(logoutAction(callback))
@@ -44,7 +43,8 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar size="md" /> <span className="font-12">{adminName}</span>
+        <CAvatar src="https://svgsilh.com/svg/659651.svg" size="md" />{' '}
+        <span className="font-12">{adminName}</span>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         {/* <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>

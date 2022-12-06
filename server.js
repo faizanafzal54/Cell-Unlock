@@ -4,16 +4,19 @@ var startupTime = +new Date();
 const express = require("express");
 const cors = require("cors");
 const app = (module.exports = express());
+const path = require("path");
 
 require("dotenv").config({ path: __dirname + "/.env" });
 const PORT = 5000;
-const environment = "development";
 const mongoose = require("mongoose");
 
 var http = require("http"),
-  path = require("path"),
+  // path = require("path"),
   bodyParser = require("body-parser"),
-  config = require("./config").development;
+  config =
+    process.env.ENVIRONMENT === "development"
+      ? require("./config").development
+      : require("./config").production;
 
 global.config = config;
 
@@ -22,7 +25,9 @@ global.config = config;
 //   bodyParser.urlencoded({ extended: true, limit: "2mb", parameterLimit: 50000 })
 // );
 app.use(express.json());
-app.use(express.urlencoded({ extended: true, limit: "2mb", parameterLimit: 50000 }));
+app.use(
+  express.urlencoded({ extended: true, limit: "2mb", parameterLimit: 50000 })
+);
 
 //
 const fileupload = require("express-fileupload");
@@ -31,13 +36,11 @@ app.use(fileupload());
 app.use(cors());
 
 const dbUrl = config.dbPath;
-const dbName = config.dbName;
 
 //Db configuration
-const db = `mongodb://${dbUrl}${dbName}`;
 (async () => {
   try {
-    await mongoose.connect(db, {
+    await mongoose.connect(dbUrl, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -53,6 +56,14 @@ app.use((req, res, next) => {
 });
 
 require("./routes/routes").configure(app);
+
+// ... static files
+app.use(express.static(path.join(__dirname, "client", "build")));
+
+// ... serve client build for live
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 app.set("port", process.env.PORT || PORT);
 

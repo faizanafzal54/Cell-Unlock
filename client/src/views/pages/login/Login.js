@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -14,25 +14,40 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { loginAction } from 'src/store/actions/user'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { toastify } from 'src/store/services/toastify'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const isAuthenticated = useSelector((state) => state.user?.isAuthenticated)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard')
+    }
+  }, [isAuthenticated])
+
   const loginHandler = async (e) => {
     e.preventDefault()
-    callback()
-    // dispatch(loginAction({ email, password }, callback))
+    if (email === '' || password === '') return toastify('error', 'Please fill all fields')
+
+    dispatch(loginAction({ email, password }, callback))
   }
 
   const callback = () => {
-    navigate('/')
+    navigate('/dashboard')
+  }
+
+  const handleRedirectToSignUp = () => {
+    navigate('/register')
   }
 
   return (
@@ -51,10 +66,11 @@ const Login = () => {
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
                       <CFormInput
+                        type="email"
                         value={email}
+                        placeholder="Email"
+                        autoComplete="email"
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Username"
-                        autoComplete="username"
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -63,10 +79,10 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </CInputGroup>
                     <CRow>
@@ -75,9 +91,14 @@ const Login = () => {
                           Login
                         </CButton>
                       </CCol>
-                      <CCol xs={6} className="text-right">
-                        <CButton type="button" color="link" className="px-0">
-                          Forgot password?
+                      <CCol xs={6} className="text-end">
+                        <CButton
+                          onClick={handleRedirectToSignUp}
+                          type="button"
+                          color="link"
+                          className="px-0"
+                        >
+                          Sign Up
                         </CButton>
                       </CCol>
                     </CRow>
@@ -88,6 +109,7 @@ const Login = () => {
           </CCol>
         </CRow>
       </CContainer>
+      <ToastContainer />
     </div>
   )
 }

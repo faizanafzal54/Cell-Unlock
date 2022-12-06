@@ -750,6 +750,11 @@
   "resolved" "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   "version" "1.1.2"
 
+"web-vitals@^3.0.4":
+  "integrity" "sha512-Yau8qf1AJ/dm6MY180Bi0qpCIuWmAfKAnOqmxLecGfIHn0+ND3H4JOhXeY73Pyi9zjSF5J4SNUewHLNUzU7mmA=="
+  "resolved" "https://registry.npmjs.org/web-vitals/-/web-vitals-3.0.4.tgz"
+  "version" "3.0.4"
+
 "webidl-conversions@^7.0.0":
   "integrity" "sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g=="
   "resolved" "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-7.0.0.tgz"

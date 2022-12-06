@@ -3,9 +3,13 @@ import { NavLink, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { CBadge } from '@coreui/react'
+import { useSelector } from 'react-redux'
+import { selectUserRole } from 'src/store/selector/user'
 
 export const AppSidebarNav = ({ items }) => {
   const location = useLocation()
+  const userRole = useSelector(selectUserRole)
+
   const navLink = (name, icon, badge) => {
     return (
       <>
@@ -57,7 +61,9 @@ export const AppSidebarNav = ({ items }) => {
   return (
     <React.Fragment>
       {items &&
-        items.map((item, index) => (item.items ? navGroup(item, index) : navItem(item, index)))}
+        items
+          .filter((item) => item.access === userRole)
+          .map((item, index) => (item.items ? navGroup(item, index) : navItem(item, index)))}
     </React.Fragment>
   )
 }

@@ -13,38 +13,43 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 import { useDispatch, useSelector } from 'react-redux'
+import { user } from 'src/store/selector/user'
+import { getStatsAction } from 'src/store/actions/user'
 
 const Stats = () => {
   const dispatch = useDispatch()
+  const userDetail = useSelector(user)
+  const stats = useSelector((state) => state.user.stats)
+
+  useEffect(() => {
+    dispatch(getStatsAction(userDetail._id))
+  }, [getStatsAction])
 
   return (
     <CRow>
-      <CCol sm={6} lg={3}>
+      <CCol sm={6} lg={4}>
         <CWidgetStatsA
           className="mb-4 pb-3"
           color="success"
-          value={<>{0}</>}
+          value={<>${stats?.availableBalance}</>}
           title="Available Balance"
         />
       </CCol>
-      <CCol sm={6} lg={3}>
+      <CCol sm={6} lg={4}>
         <CWidgetStatsA
           className="mb-4 pb-3"
           color="primary"
-          value={<>{0}</>}
-          title="Total Receipt"
-        />
-      </CCol>
-      <CCol sm={6} lg={3}>
-        <CWidgetStatsA
-          className="mb-4 pb-3"
-          color="danger"
-          value={<>{0}</>}
+          value={<>${stats?.creditsInProgress}</>}
           title="Credits in Progress"
         />
       </CCol>
-      <CCol sm={6} lg={3}>
-        <CWidgetStatsA className="mb-4 pb-3" color="success" value={<>{0}</>} title="Credit Used" />
+      <CCol sm={6} lg={4}>
+        <CWidgetStatsA
+          className="mb-4 pb-3"
+          color="secondary"
+          value={<>${stats?.creditUsed}</>}
+          title="Credit Used"
+        />
       </CCol>
     </CRow>
   )

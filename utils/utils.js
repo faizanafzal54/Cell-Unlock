@@ -65,4 +65,12 @@ module.exports = {
     let strTime = hours + ":" + minutes + " " + ampm;
     return strTime;
   },
+  generateRandomString: function (n) {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let str = "";
+    for (let i = n; i > 0; --i) {
+      str += chars[Math.round(Math.random() * (chars.length - 1))];
+    }
+    return str;
+  },
 };

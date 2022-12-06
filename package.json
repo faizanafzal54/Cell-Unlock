@@ -5,10 +5,14 @@
   "main": "index.js",
   "scripts": {
     "pm2": "pm2 start processes.json --no-daemon",
-    "start": "nodemon server.js",
+    "start": "node server.js" ,
     "debug": "nodemon --inspect ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db:create": "sequelize-cli db:create"
+    "db:create": "sequelize-cli db:create",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+  },
+  "engines": {
+    "node": "16.15.1"
   },
   "keywords": [],
   "author": "",
@@ -25,5 +29,8 @@
     "nodemailer": "^6.6.5",
     "path": "^0.12.7",
     "stripe": "^10.10.0"
+  },
+  "devDependencies": {
+    "web-vitals": "^3.0.4"
   }
 }

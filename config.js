@@ -1,17 +1,19 @@
 module.exports = {
+  production: {
+    jwtSecret: process.env.JWT_SECRET,
+    dbPath: process.env.DATABASE_LIVE_URL,
+    stripePublicKeys: process.env.STRIPE_PUBLIC_KEY,
+    stripeSecretKeys: process.env.STRIPE_SECRET_KEY,
+  },
   development: {
-    jwtSecret: "!HasGMS_APP_ATIF",
-    dbPath: "localhost:27017/",
+    dbPath: process.env.DATABASE_LOCAL_URL,
+    jwtSecret: process.env.JWT_SECRET,
+    stripePublicKeys: process.env.STRIPE_PUBLIC_KEY,
+    stripeSecretKeys: process.env.STRIPE_SECRET_KEY,
     dbName: "gms-db",
-    stripePublicKeys: "pk_test_51LiYogGjrZbn5N9jH0ICgEMgxrN6RYSnwcB2FBxadvHQFQvmzFKIBnd8X02bi3eM3M7i0BYA51pa49DzE1OJagkP00CpmqqQMM",
-    stripeSecretKeys: "sk_test_51LiYogGjrZbn5N9jQIXup43msdTuGuB3KH3eqTgzJXsD34WHVQVyNHOZlLWjErwQDqhicfYFBIKcZ39gj5KH1i3000EJqtOH3r",
   },
   test: {
     url: process.env.TEST_DATABASE_URL,
-    dialect: "postgres",
-  },
-  production: {
-    url: process.env.DATABASE_URL,
     dialect: "postgres",
   },
 };

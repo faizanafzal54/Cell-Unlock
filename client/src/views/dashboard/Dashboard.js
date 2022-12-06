@@ -9,7 +9,9 @@ const Dashboard = () => {
   return (
     <>
       <Stats />
-      <CCard className="mb-4"></CCard>
+      <CCard className="mb-4">
+        <img style={{ maxHeight: '600px' }} src={require('../../assets/cell2.jpeg')} />
+      </CCard>
     </>
   )
 }

@@ -11,8 +11,10 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
+  cilCog,
   cilPeople,
-  cilGrain,
+  cilCart,
+  cilDollar,
   cilLocationPin,
   cilSettings,
   cilClipboard,
@@ -31,12 +33,74 @@ const _nav = [
       color: 'info',
       text: 'NEW',
     },
+    access: 'USER',
   },
   {
     component: CNavItem,
+    name: 'Orders',
+    to: '/orders',
+    icon: <CIcon icon={cilCart} customClassName="nav-icon" />,
+    access: 'USER',
+  },
+  {
+    component: CNavGroup,
+    name: 'Credits',
+    to: '/credits',
+    icon: <CIcon icon={cilDollar} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Buy',
+        to: '/credits/buy',
+      },
+      {
+        component: CNavItem,
+        name: 'Manage Account',
+        to: '/credits/manage-account',
+      },
+    ],
+    access: 'USER',
+  },
+  {
+    component: CNavItem,
+    name: 'Dashboard',
+    to: '/dashboard',
+    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+      text: 'NEW',
+    },
+    access: 'ADMIN',
+  },
+  {
+    component: CNavItem,
+    name: 'Orders',
+    to: 'admin/orders',
+    icon: <CIcon icon={cilCart} customClassName="nav-icon" />,
+    access: 'ADMIN',
+  },
+
+  {
+    component: CNavItem,
+    name: 'Services',
+    to: 'admin/services',
+    icon: <CIcon icon={cilCog} customClassName="nav-icon" />,
+    access: 'ADMIN',
+  },
+
+  {
+    component: CNavItem,
     name: 'Users',
-    to: '/customers',
+    to: 'admin/users',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    access: 'ADMIN',
+  },
+  {
+    component: CNavItem,
+    name: 'Categories',
+    to: 'admin/categories',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    access: 'ADMIN',
   },
 
   // {

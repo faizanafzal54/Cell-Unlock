@@ -1,9 +1,34 @@
 const Service = require("../models/ServiceModel");
 
 module.exports = {
-  find: async (where, update) => {
+  find: async () => {
     try {
-      const response = await Service.find();
+      const response = await Service.find({});
+      return response;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
+
+  aggregate: async (query) => {
+    try {
+      const response = await Service.aggregate(query);
+      return response;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
+
+  findWithPagination: async (query, startIndex, endIndex) => {
+    try {
+      const response = await Service.find(query)
+        .populate({ path: "categoryId", select: "name" })
+        .skip(startIndex)
+        .limit(endIndex);
       return response;
     } catch (err) {
       let error = new Error(err);
@@ -56,8 +81,21 @@ module.exports = {
   },
   findByPk: async (id) => {
     try {
-      const service = await Service.findById(id);
+      const service = await Service.findById(id).populate({
+        path: "categoryId",
+        select: "name",
+      });
       return service;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
+
+  totalServices: async (req, res) => {
+    try {
+      return await Service.countDocuments({});
     } catch (err) {
       let error = new Error(err);
       error.statusCode = 400;
