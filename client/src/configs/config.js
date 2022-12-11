@@ -1,7 +1,7 @@
 module.exports =
   process.env.NODE_ENV === 'production'
     ? {
-        apiUrl: 'https://gms-system.herokuapp.com/api/',
+        apiUrl: 'http://100.21.180.228:5000/',
         cipherKey: 'tuzmo-role',
         s3Path: 'https://tuzmo-stag.s3.amazonaws.com/',
       }
