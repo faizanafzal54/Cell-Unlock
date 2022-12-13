@@ -1,9 +1,9 @@
 {
   "name": "tuzmo-admin",
   "version": "4.2.0",
-  "description": "Tuzmo Admin Panel",
+  "description": "Cell Unlock Portal",
   "license": "MIT",
-  "author": "Mobinspire",
+  "author": "Atif",
   "scripts": {
     "build": "react-scripts build",
     "changelog": "auto-changelog --starting-version 4.1.0 --commit-limit false --hide-credit",

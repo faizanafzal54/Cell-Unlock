@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom'
 function LandingPage() {
   return (
     <>
-      <nav class="navbar navbar-light bg-light py-0">
-        <div class="container-fluid px-0">
-          <a class="navbar-brand p-0">
+      <nav className="navbar navbar-light bg-light py-0">
+        <div className="container-fluid px-0">
+          <a className="navbar-brand p-0">
             <img src={require('../../assets/Cell Unloking Logo.jpg')} height={'92px'} />
           </a>
 
-          <form class="d-flex">
+          <form className="d-flex">
             <Link className="nav-link me-4" to="/contact">
               Contact Us
             </Link>

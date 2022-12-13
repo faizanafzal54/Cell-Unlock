@@ -1,5 +1,5 @@
 const defaultState = {
-  isAuthenticated: true,
+  isAuthenticated: false,
   user: {
     _id: '',
     name: '',
