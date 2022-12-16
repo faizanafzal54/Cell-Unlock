@@ -36,6 +36,7 @@ const OrderComplete = () => {
   const [status, setStatus] = useState('')
   const [description, setDescription] = useState('')
   const [imeiNumber, setImeiNumber] = useState('')
+  const [serviceType, setServiceType] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const params = useParams()
@@ -48,6 +49,7 @@ const OrderComplete = () => {
     setFromDate(new Date(data?.fromDate))
     setToDate(new Date(data?.toDate))
     setStatus(data?.status)
+    setServiceType(data?.serviceType)
   }, [orderByIdAction])
 
   const submitHandler = (e) => {
@@ -77,7 +79,7 @@ const OrderComplete = () => {
         <CCol xs={12}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Update Order</strong>
+              <strong>Update Order ({serviceType})</strong>
             </CCardHeader>
             <CCardBody>
               <CCol className="m-auto mt-3 mb-5">

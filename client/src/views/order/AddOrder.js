@@ -67,7 +67,6 @@ const AddOrder = () => {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    console.log({ service, fromDate, serialNumber })
     if (service === '' || !fromDate || serialNumber === '')
       return toastify('error', 'Please fill all fields')
 
@@ -154,7 +153,7 @@ const AddOrder = () => {
         <CCol xs={12}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>Create Order</strong>
+              <strong>Create Order ({params.type})</strong>
             </CCardHeader>
             <CCardBody>
               <CContainer className=" mt-3 mb-5">
@@ -264,7 +263,7 @@ const AddOrder = () => {
                             value={imeiNumber}
                             placeholder="seprate IMEI number with , ex: 358265010779665,358265010779665   "
                             onChange={(e) => setImeiNumber(e.target.value)}
-                            // required
+                          // required
                           ></CFormTextarea>
                           {/* <span>seprate IMEI number with ","</span> */}
                         </div>
@@ -280,7 +279,7 @@ const AddOrder = () => {
                               value={imeiNumber}
                               placeholder="seprate IMEI number with , ex: 358265010779665,358265010779665   "
                               onChange={(e) => setImeiNumber(e.target.value)}
-                              // required
+                            // required
                             ></CFormTextarea>
                             {/* <span>seprate IMEI number with ","</span> */}
                           </div>
@@ -294,7 +293,7 @@ const AddOrder = () => {
                               value={serverFields}
                               placeholder="Enter server code"
                               onChange={(e) => setServerFields(e.target.value)}
-                              // required
+                            // required
                             ></CFormTextarea>
                             {/* <span>seprate IMEI number with ","</span> */}
                           </div>
@@ -327,7 +326,7 @@ const AddOrder = () => {
                         <CFormLabel>End Date</CFormLabel>
                         <DatePicker selected={toDate} onChange={(date) => setToDate(date)} />
                       </div> */}
-                      <div className="mb-3">
+                      {selectedOption && <div className="mb-3">
                         <CFormLabel>Serial Number</CFormLabel>
                         <CFormInput
                           type="text"
@@ -335,7 +334,7 @@ const AddOrder = () => {
                           aria-label="lg input example"
                           onChange={(e) => setSerialNumber(e.target.value)}
                         />
-                      </div>
+                      </div>}
                       <div className="mb-3">
                         <CFormLabel>Start Date</CFormLabel>
                         <DatePicker selected={fromDate} onChange={(date) => setFromDate(date)} />
