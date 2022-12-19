@@ -71,6 +71,13 @@ module.exports = {
   regiser: async (req, res) => {
     try {
       const { firstName, lastName, email, password, gender } = req.body;
+      const user = await userDao.findOneByEmail(email)
+      if (user) {
+        let error = new Error('This email is already in use. Please use another one')
+        error.statusCode = 400
+        return sendResponse(error, req, res, error);
+
+      }
       const hashedPassword = await bcrypt.hash(password, SALTROUNDS);
       await userDao.create({
         name: `${firstName} ${lastName}`,
