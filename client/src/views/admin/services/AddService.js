@@ -76,7 +76,6 @@ const AddService = () => {
   useEffect(async () => {
     if (params.mode !== 'add') {
       const data = await dispatch(serviceByIdAction(params.mode))
-      console.log(data)
       setServicetype(data?.serviceType)
       setName(data?.name)
       setPrice(data?.price)
@@ -118,9 +117,8 @@ const AddService = () => {
   const submitHandler = (e) => {
     e.preventDefault()
 
-    if (selectedCategory === '') return toastify('error', 'Please select atleast one category')
 
-    const data = {
+    let payload = {
       name: name,
       description: serviceDesc,
       isDeleted: disable,
@@ -156,7 +154,6 @@ const AddService = () => {
         tags: [],
         keywords: [],
       },
-      categoryId: selectedCategory,
       // categoryInfo: {
       //   name: categoryName,
       //   htmlTitle: categoryHtml,
@@ -165,11 +162,17 @@ const AddService = () => {
       //   keywords: [],
       // },
     }
+    if (selectedCategory) {
+      payload = {
+        ...payload,
+        categoryId: selectedCategory
+      }
+    }
 
     if (params.mode === 'add') {
-      dispatch(addServiceAction(data, callback))
+      dispatch(addServiceAction(payload, callback))
     } else {
-      dispatch(updateServiceAction(params.mode, data, callback))
+      dispatch(updateServiceAction(params.mode, payload, callback))
     }
   }
 
@@ -435,8 +438,8 @@ const AddService = () => {
                                   e.target.checked
                                     ? setFeatures([...features, e.target.value])
                                     : setFeatures(
-                                        features?.filter((item) => item !== e.target.value),
-                                      )
+                                      features?.filter((item) => item !== e.target.value),
+                                    )
                                 }
                               />
                               <CFormCheck
@@ -452,8 +455,8 @@ const AddService = () => {
                                   e.target.checked
                                     ? setFeatures([...features, e.target.value])
                                     : setFeatures(
-                                        features?.filter((item) => item !== e.target.value),
-                                      )
+                                      features?.filter((item) => item !== e.target.value),
+                                    )
                                 }
                               />
                               <CFormCheck
@@ -469,8 +472,8 @@ const AddService = () => {
                                   e.target.checked
                                     ? setFeatures([...features, e.target.value])
                                     : setFeatures(
-                                        features?.filter((item) => item !== e.target.value),
-                                      )
+                                      features?.filter((item) => item !== e.target.value),
+                                    )
                                 }
                               />
                               <CFormCheck
@@ -486,8 +489,8 @@ const AddService = () => {
                                   e.target.checked
                                     ? setFeatures([...features, e.target.value])
                                     : setFeatures(
-                                        features?.filter((item) => item !== e.target.value),
-                                      )
+                                      features?.filter((item) => item !== e.target.value),
+                                    )
                                 }
                               />
                               <CFormCheck
@@ -503,8 +506,8 @@ const AddService = () => {
                                   e.target.checked
                                     ? setFeatures([...features, e.target.value])
                                     : setFeatures(
-                                        features?.filter((item) => item !== e.target.value),
-                                      )
+                                      features?.filter((item) => item !== e.target.value),
+                                    )
                                 }
                               />
                             </div>
@@ -534,7 +537,7 @@ const AddService = () => {
                                     label="Single"
                                     value="SINGLE"
                                     onChange={(e) => setFieldType(e.target.value)}
-                                    // defaultChecked
+                                  // defaultChecked
                                   />
                                 )}
                               </div>
@@ -704,6 +707,7 @@ const AddService = () => {
                             <div className="mb-3">
                               <CFormLabel htmlFor="exampleFormControlInput1">Reseller</CFormLabel>
                               <CFormInput
+                                required
                                 type="number"
                                 value={resellerPrice}
                                 placeholder="Enter Reseller Price"
@@ -713,6 +717,7 @@ const AddService = () => {
                             <div className="mb-3">
                               <CFormLabel htmlFor="exampleFormControlInput1">Dealer</CFormLabel>
                               <CFormInput
+                                required
                                 type="number"
                                 value={dealerPrice}
                                 placeholder="Enter Dealer Price"
@@ -722,6 +727,7 @@ const AddService = () => {
                             <div className="mb-3">
                               <CFormLabel htmlFor="exampleFormControlInput1">User</CFormLabel>
                               <CFormInput
+                                required
                                 type="number"
                                 value={userPrice}
                                 placeholder="Enter User Price"
@@ -759,11 +765,9 @@ const AddService = () => {
                               </CFormLabel>
                               <CFormSelect
                                 aria-label="Default select example"
+                                value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
                               >
-                                <option value="" disabled hidden>
-                                  {categoryDetail?.name}
-                                </option>
                                 <option value="" disabled>
                                   Select Category
                                 </option>

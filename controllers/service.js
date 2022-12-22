@@ -1,13 +1,21 @@
 const { sendResponse } = require("../utils/utils");
 const serviceDao = require("../daos/service");
+const categoryDao = require("../daos/category");
 
 module.exports = {
   createService: async (req, res) => {
     try {
-      const { name, description, credits } = req.body;
-      await serviceDao.create({
-        ...req.body,
-      });
+
+      let payload = { ...req.body }
+
+      if (req.body.categoryId === undefined || req.body.categoryId === '' || req.body.categoryId === null) {
+        const generalCatId = await categoryDao.findOneWhere({ name: 'General' });
+        payload = {
+          ...payload,
+          categoryId: generalCatId?._id ?? '63a43ab0147a64d44233ba93'
+        }
+      }
+      await serviceDao.create(payload);
       sendResponse(null, req, res, { message: "Service successfully created" });
     } catch (err) {
       sendResponse(err, req, res, err);

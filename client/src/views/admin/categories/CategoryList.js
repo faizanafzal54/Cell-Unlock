@@ -108,12 +108,10 @@ const CategoryList = () => {
                 <CTableBody>
                   {categories?.map((category) => {
                     return (
-                      <CTableRow key={category._id}>
+                      category.name !== 'General' && <CTableRow key={category._id}>
                         <CTableDataCell>{category?.name}</CTableDataCell>
                         <CTableDataCell>
-                          {category?.description.length > 10
-                            ? `${category?.description.substring(0, 10)}...`
-                            : category?.description}
+                          {category?.description}
                         </CTableDataCell>
 
                         <CTableDataCell>
@@ -146,39 +144,38 @@ const CategoryList = () => {
             setCategoryId(null)
           }}
         >
-          <CForm onSubmit={handleSubmit}>
-            <CModalHeader>
-              <CModalTitle>
-                {isEdit ? 'Edit' : 'Add'} Category {isEdit ? 'true' : 'fale'}
-              </CModalTitle>
-            </CModalHeader>
-            <CModalBody>
-              <div className="mb-3">
-                <CFormLabel htmlFor="exampleFormControlInput1">Name</CFormLabel>
-                <CFormInput
-                  type="text"
-                  placeholder="Enter Category Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
-                <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
-                <CFormTextarea
-                  id="exampleFormControlTextarea1"
-                  rows="3"
-                  value={description}
-                  placeholder=".... "
-                  onChange={(e) => setDescription(e.target.value)}
-                ></CFormTextarea>
-              </div>
-            </CModalBody>
-            <CModalFooter>
-              <CButton type="submit" color="secondary" variant="outline">
-                {isEdit ? 'Save' : 'Add'}
-              </CButton>
-            </CModalFooter>
-          </CForm>
+
+          <CModalHeader>
+            <CModalTitle>
+              {isEdit ? 'Edit' : 'Add'} Category {isEdit ? 'true' : 'fale'}
+            </CModalTitle>
+          </CModalHeader>
+          <CModalBody className='px-4'>
+            <div className="mb-3">
+              <CFormLabel htmlFor="exampleFormControlInput1">Name</CFormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Enter Category Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
+              <CFormTextarea
+                id="exampleFormControlTextarea1"
+                rows="3"
+                value={description}
+                placeholder=".... "
+                onChange={(e) => setDescription(e.target.value)}
+              ></CFormTextarea>
+            </div>
+          </CModalBody>
+          <CModalFooter className='px-4'>
+            <CButton onClick={handleSubmit} color="secondary" variant="outline">
+              {isEdit ? 'Save' : 'Add'}
+            </CButton>
+          </CModalFooter>
         </CModal>
       </CRow>
       <ToastContainer />

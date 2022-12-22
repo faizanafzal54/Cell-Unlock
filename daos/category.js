@@ -24,6 +24,18 @@ module.exports = {
     }
   },
 
+  findOneWhere: async (payload) => {
+    try {
+      const category = await Category.findOne({ ...payload });
+
+      return category;
+    } catch (err) {
+      let error = new Error(err);
+      error.statusCode = 400;
+      throw error;
+    }
+  },
+
   findByPk: async (id) => {
     try {
       const category = await Category.findById(id);
