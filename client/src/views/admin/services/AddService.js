@@ -79,7 +79,7 @@ const AddService = () => {
       setServicetype(data?.serviceType)
       setName(data?.name)
       setPrice(data?.price)
-      setSupplier(data?.price)
+      setSupplier(data?.supplier)
       setCostPrice(data?.costPrice)
       setDeliveryTime(data?.deliveryTime)
       setOrderCancelTime(data?.orderCancelTime)

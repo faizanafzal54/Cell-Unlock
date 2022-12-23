@@ -159,7 +159,7 @@ const AddOrder = () => {
               <CContainer className=" mt-3 mb-5">
                 <CForm onSubmit={submitHandler}>
                   <CRow className=" justify-content-center ">
-                    <CCol className="">
+                    <CCol xs={6} className="">
                       <div className="mb-3 ">
                         <CFormLabel htmlFor="exampleFormControlText">Select Service</CFormLabel>
                         <Select
@@ -168,19 +168,6 @@ const AddOrder = () => {
                           options={options}
                         />
 
-                        {/* <CFormLabel htmlFor="exampleFormControlText">Select Service</CFormLabel>
-                        <CFormSelect
-                          onChange={(e) => selectService(e)}
-                          required
-                          id="validationCustom01"
-                        >
-                          <option>Select Service</option>
-                          {services?.map((service) => (
-                            <option key={service._id} value={service._id}>
-                              {service.name}
-                            </option>
-                          ))}
-                        </CFormSelect> */}
                       </div>
 
                       {selectedOption ? (
@@ -243,9 +230,9 @@ const AddOrder = () => {
                                 </CCol>
                                 <hr />
 
-                                <div className="d-flex">
+                                <div>
                                   <p className="fw-bold ">Description:</p>
-                                  <p className=" ps-2">{parse(selectedOption?.description)}</p>
+                                  <p className="ps-2 text-break">{parse(selectedOption?.description)}</p>
                                 </div>
                               </CRow>
                             </CAccordionBody>
