@@ -105,7 +105,8 @@ const AddService = () => {
       setDuplicateIMEI(data?.duplicateIMEI)
       setDisable(data?.isDeleted)
       setSelectedCategory(data?.categoryId?._id)
-      setCategoryDetail(data?.categoryId)
+      setCategoryDetail(data?.categoryId);
+      setServiceDesc(data?.description)
     }
   }, [serviceByIdAction])
 

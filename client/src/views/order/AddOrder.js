@@ -147,6 +147,8 @@ const AddOrder = () => {
       setSelectedServiceDetail(selectedService)
     }
   }
+
+
   return (
     <>
       <CRow>
@@ -313,7 +315,7 @@ const AddOrder = () => {
                         <CFormLabel>End Date</CFormLabel>
                         <DatePicker selected={toDate} onChange={(date) => setToDate(date)} />
                       </div> */}
-                      {selectedOption && <div className="mb-3">
+                      {selectedOption && customFields.length === 0 && <div className="mb-3">
                         <CFormLabel>Serial Number</CFormLabel>
                         <CFormInput
                           type="text"
