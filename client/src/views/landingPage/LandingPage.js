@@ -23,73 +23,81 @@ function LandingPage() {
         </div>
       </nav>
       <div style={{ backgroundColor: '#EBEDEF' }} className="text-center landing-page-div ">
-        <CRow className='justify-content-center g-0'>
-          <div class="col-8">
-            <div class="callout callout-info bg-white text-start">
-              <div><h4>IMPORTANT NOTICE !</h4> </div>
-              Dear client, our All service working (Monday to Friday - Saturday + Sunday holiday) Please before order must count Service max time and working days "Monday to Friday"
-
-              Thank you for using cellunlocking.us seerver
-            </div>
-          </div>
-        </CRow>
+        <div class="d-flex align-items-center py-3" style={{ color: 'red', fontSize: '20px' }}>
+          <marquee behavior="scroll" direction="left"> Dear client, our All service working (Monday to Friday - Saturday + Sunday holiday) Please before order must count Service max time and working days "Monday to Friday"
+            Thank you for using cellunlocking.us server.</marquee>
+        </div>
         <CRow className='g-0'>
-          <div class="col-6 ps-4 pe-2">
-            <div class="callout callout-info bg-white text-start mt-0">
-              <div><h4> 24/7 Reliable Support:</h4> </div>
-
-              our staff available 24x7. you can contact via E-mail, whatsapp Text Message, we're here to help.
-              <br />
-              <br />
-              <div><h4> Beatable prices:</h4> </div>
-              we are offering best price that can BEAT any competitors' price.
-              <br />
-              <br />
-              <div><h4> Absolutely Safe:</h4> </div>
-              your all information Completely safe include your money as well.
-              <br />
-              <br />
-              <div><h4> Unlock All Major Brands:</h4> </div>
-              LG, Huawei, Samsung, Nokia, HTC, IPhone, Sony.
-              All kind of BOX/DONGLE Tool credit available
-            </div>
-            <div class="callout callout-info bg-white text-start">
-              <div><h4>Our Mission</h4> </div>
-              Our mission is to meet customer expectations by providing quick response, lowest pricing, and consistent service. We try to make your business and your profit margins grow as much as possible.
-            </div>
-            <div class="callout callout-info bg-white text-start">
-              <div><h4>Contact Us</h4> </div>
-              <div className='d-flex pt-2'>
-
-                <a href="https://www.facebook.com/cellunlocking.us" target="_blank" className='icon-parent-fb'>
-                  <i class="fa-2x fa fa-facebook"></i>
-                </a>
-                <a href='tel:+92-326-5171409' className='icon-parent-tg'>
-                  <i class="fa-2x fa fa-telegram"></i>
-                </a>
-                <a href='tel:+92-326-5171409' className='icon-parent-wa'>
-                  <i class="fa-2x fa fa-whatsapp"></i>
-                </a>
-
-              </div>
-
-            </div>
-          </div>
-          <CCol xs={6} className='ps-2 pe-4'>
+          <CCol xs={12} className='px-3'>
             <CCard>
               <CCardBody className='p-0 py-2'>
                 <CCarousel controls>
                   <CCarouselItem>
-                    <img className="d-block container-fluid" src={require('../../assets/cell1.jpeg')} alt="slide 1" />
+                    <img className="d-block container-fluid" src={require('../../assets/bg1.png.jpg')} alt="slide 1" />
                   </CCarouselItem>
                   <CCarouselItem>
-                    <img className="d-block container-fluid" src={require('../../assets/cell2.jpeg')} alt="slide 2" />
+                    <img className="d-block container-fluid" src={require('../../assets/bg2.png.jpg')} alt="slide 2" />
+                  </CCarouselItem>
+                  <CCarouselItem>
+                    <img className="d-block container-fluid" src={require('../../assets/bg3.png.jpg')} alt="slide 2" />
                   </CCarouselItem>
                 </CCarousel>
               </CCardBody>
             </CCard>
           </CCol>
+          <div class="col-12 pt-3 px-3">
+            <div className='row g-0'>
+              <div className='col-12 px-1'>
+                <div class="callout callout-info bg-white text-start mt-0">
+                  <div><h4>Our Mission</h4> </div>
+                  Our mission is to meet customer expectations by providing quick response, lowest pricing, and consistent service. We try to make your business and your profit margins grow as much as possible.
+                </div>
+              </div>
+              <div className='col-md-6 px-1'>
+                <div class="callout callout-info bg-white text-start mt-0">
+                  <div><h4> Unlock All Major Brands:</h4> </div>
+                  LG, Huawei, Samsung, Nokia, HTC, IPhone, Sony.
+                  All kind of BOX/DONGLE Tool credit available
+                </div>
+              </div>
+              <div className='col-md-6 px-1'>
+                <div class="callout callout-info bg-white text-start mt-0">
+                  <div><h4> 24/7 Reliable Support:</h4> </div>
+                  our staff available 24x7. you can contact via E-mail, whatsapp Text Message, we're here to help.
+                </div>
+              </div>
+              <div className='col-md-6 px-1'>
+                <div class="callout callout-info bg-white text-start mt-0">
+                  <div><h4> Beatable prices:</h4> </div>
+                  we are offering best price that can BEAT any competitors' price.
+                </div>
+              </div>
+              <div className='col-md-6 px-1'>
+                <div class="callout callout-info bg-white text-start mt-0">
+                  <div><h4> Absolutely Safe:</h4> </div>
+                  your all information Completely safe include your money as well.
+                </div>
+              </div>
+            </div>
+
+
+          </div>
         </CRow>
+        <div className='d-flex absolute-icons-fb'>
+          <a href="https://www.facebook.com/cellunlocking.us" target="_blank" className='icon-parent-fb'>
+            <i class="fa-2x fa fa-facebook"></i>
+          </a>
+        </div>
+        <div className='d-flex absolute-icons-tg'>
+          <a href='tel:+92-326-5171409' className='icon-parent-tg'>
+            <i class="fa-2x fa fa-telegram"></i>
+          </a>
+        </div>
+        <div className='d-flex absolute-icons-wa'>
+          <a href='tel:+92-326-5171409' className='icon-parent-wa'>
+            <i class="fa-2x fa fa-whatsapp"></i>
+          </a>
+        </div>
       </div>
     </>
   )
