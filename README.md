@@ -1,2 +1,1 @@
-# heirshares
-Property/Land Ownership Management Application | AWS, Web Application, Custom Website w/CMS, Deep Logic Interface, 3 User type interface, monthly subscription, Web admin 
+Cell-Unlock or GMS is a web application which allows users to request a cell or device unlock to different server providers available on this platform
